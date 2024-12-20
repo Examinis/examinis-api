@@ -11,7 +11,16 @@ fastapi = "^0.115.6"
 
 [tool.poetry.group.dev.dependencies]
 fastapi-cli = "^0.0.7"
+ruff = "^0.8.4"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
