@@ -12,6 +12,8 @@ fastapi = "^0.115.6"
 [tool.poetry.group.dev.dependencies]
 fastapi-cli = "^0.0.7"
 ruff = "^0.8.4"
+pytest = "^8.3.4"
+pytest-cov = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -24,3 +26,7 @@ select = ['I', 'F', 'E', 'W', 'PL', 'PT']
 [tool.ruff.format]
 preview = true
 quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = '-p no:warnings'
