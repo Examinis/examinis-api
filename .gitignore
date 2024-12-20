@@ -1,0 +1,27 @@
+# Ambiente virtual do Poetry
+.venv/
+
+# Diretórios do sistema
+__pycache__/
+*.pyc
+*.pyo
+
+
+# Arquivos de configuração do editor (ex: VS Code)
+.vscode/
+
+# Arquivos de configuração do PyCharm
+.idea/
+
+# Arquivos de log
+*.log
+
+# Arquivos de cache do pytest
+.cache/
+.coverage
+
+# Arquivos temporários do sistema
+*.swp
+*.bak
+*.tmp
+
