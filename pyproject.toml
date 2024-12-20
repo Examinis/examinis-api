@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "examinis"
+version = "0.1.0"
+description = ""
+authors = ["paulosys <paulosilvasergio486@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+
+[tool.poetry.group.dev.dependencies]
+fastapi-cli = "^0.0.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
