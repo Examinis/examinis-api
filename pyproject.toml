@@ -27,7 +27,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 80
-extend-exclude = ['migrations']
+extend-exclude = ['migrations', '__init__.py']
 
 [tool.ruff.lint]
 preview = true

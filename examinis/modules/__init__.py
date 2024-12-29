@@ -11,4 +11,4 @@ def get_named_modules() -> List[str]:
     ]
 
 
-__all__ = get_named_modules()
+__all__: List[str] = get_named_modules()
