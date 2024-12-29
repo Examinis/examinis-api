@@ -1,6 +1,7 @@
 services:
   examinis_database:
-    image: postgres:17.2-alpine3.21
+    image: postgres
+    container_name: examinis_database
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
@@ -12,6 +13,7 @@ services:
 
   examinis_app:
     image: examinis_app
+    container_name: examinis_app
     entrypoint: ./entrypoint.sh
     build: .
     ports:
@@ -19,7 +21,7 @@ services:
     depends_on:
       - examinis_database
     environment:
-      DATABASE_URL: postgresql+psycopg://app_user:app_password@examinis_database:5432/app_db
+      DATABASE_URL: postgresql+psycopg://admin:secret@examinis_database:5432/app_db
 
 volumes:
   pgdata:
