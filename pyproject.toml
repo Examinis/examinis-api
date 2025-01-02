@@ -33,6 +33,9 @@ extend-exclude = ['migrations', '__init__.py']
 preview = true
 select = ['I', 'F', 'E', 'W', 'PL', 'PT']
 
+[tool.ruff.lint.per-file-ignores]
+"examinis/models/*" = ['E902', 'F821']
+
 [tool.ruff.format]
 preview = true
 quote-style = 'single'
@@ -45,5 +48,5 @@ addopts = '-p no:warnings'
 run = 'fastapi dev examinis/app.py'
 test = 'pytest -s -x --cov=examinis'
 post_test = 'coverage.html'
-lint = 'ruff check . && ruff check . --diff'
-format = 'ruff check . --fix && ruff format .'
+lint = 'ruff check . ; ruff check . --diff'
+format = 'ruff check . --fix ; ruff format .'
