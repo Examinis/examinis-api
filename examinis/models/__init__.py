@@ -2,3 +2,8 @@ from .base import Base
 from .user import User
 from .user_status import UserStatus
 from .role import Role
+from .question import Question
+from .difficulty import Difficulty
+from .subject import Subject
+from .option import Option
+from .correct_option import CorrectOption
