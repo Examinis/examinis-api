@@ -1,8 +1,8 @@
-"""add questions related tables
+"""add_questions_related_tables
 
-Revision ID: 413df41863d1
+Revision ID: 648bb3eea262
 Revises: f9a312457602
-Create Date: 2025-01-03 17:45:51.174611
+Create Date: 2025-01-05 00:50:12.321049
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '413df41863d1'
+revision: str = '648bb3eea262'
 down_revision: Union[str, None] = 'f9a312457602'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -33,9 +33,11 @@ def upgrade() -> None:
     op.create_table('question',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('subject_id', sa.Integer(), nullable=False),
     sa.Column('difficulty_id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['difficulty_id'], ['difficulty.id'], ),
     sa.ForeignKeyConstraint(['subject_id'], ['subject.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),

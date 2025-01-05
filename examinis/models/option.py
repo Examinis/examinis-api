@@ -1,5 +1,5 @@
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from examinis.models import Base
 
@@ -13,3 +13,5 @@ class Option(Base):
     is_correct: Mapped[bool]
 
     question_id: Mapped[int] = mapped_column(ForeignKey('question.id'))
+
+    question: Mapped['Question'] = relationship('Question', back_populates='options')
