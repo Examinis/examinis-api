@@ -26,3 +26,4 @@ class User(Base):
         'UserStatus', back_populates='users'
     )
     role: Mapped['Role'] = relationship('Role', back_populates='users')
+    questions: Mapped[list['Question']] = relationship('Question', back_populates='user')
