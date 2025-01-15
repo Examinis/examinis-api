@@ -1,8 +1,10 @@
-from typing import Generic, Optional, Type, TypeVar
+from typing import Generic, List, Optional, Type, TypeVar
 
 from fastapi import Depends
+from sqlalchemy import desc
 from sqlalchemy.orm.session import Session
 
+from examinis.common.schemas.pagination_schema import PageParams
 from examinis.db.config import get_session
 from examinis.models import Base
 
@@ -24,5 +26,20 @@ class RepositoryAbstract(Generic[T]):
     def get(self, id: int) -> Optional[T]:
         return self.session.get(self.model, id)
 
-    def get_all(self) -> list[T]:
+    def get_all(self) -> List[T]:
         return self.session.query(self.model).all()
+
+    def get_all_paginated(self, params: PageParams) -> List[T]:
+        query = self.session.query(self.model)
+        if params.order_by:
+            column = getattr(self.model, params.order_by, None)
+            if column:
+                if params.order_desc:
+                    query = query.order_by(desc(column))
+                else:
+                    query = query.order_by(column)
+
+        return query.limit(params.size).offset((params.page - 1) * params.size).all()
+
+    def count_all(self) -> int:
+        return self.session.query(self.model).count()
