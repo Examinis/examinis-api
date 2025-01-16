@@ -12,7 +12,9 @@ T = TypeVar('T', bound=Base)
 
 
 class RepositoryAbstract(Generic[T]):
-    def __init__(self, model: Type[T], session: Session = Depends(get_session)):
+    def __init__(
+        self, model: Type[T], session: Session = Depends(get_session)
+    ):
         self.model = model
         self.session = session
 
@@ -39,7 +41,11 @@ class RepositoryAbstract(Generic[T]):
                 else:
                     query = query.order_by(column)
 
-        return query.limit(params.size).offset((params.page - 1) * params.size).all()
+        return (
+            query.limit(params.size)
+            .offset((params.page - 1) * params.size)
+            .all()
+        )
 
     def count_all(self) -> int:
         return self.session.query(self.model).count()

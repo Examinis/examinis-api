@@ -17,11 +17,23 @@ class Question(Base):
     )
 
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
-    subject_id: Mapped[int] = mapped_column(ForeignKey('subject.id'), nullable=False)
-    difficulty_id: Mapped[int] = mapped_column(ForeignKey('difficulty.id'), nullable=False)
+    subject_id: Mapped[int] = mapped_column(
+        ForeignKey('subject.id'), nullable=False
+    )
+    difficulty_id: Mapped[int] = mapped_column(
+        ForeignKey('difficulty.id'), nullable=False
+    )
 
     user: Mapped['User'] = relationship('User', back_populates='questions')
-    subject: Mapped['Subject'] = relationship('Subject', back_populates='questions')
-    difficulty: Mapped['Difficulty'] = relationship('Difficulty', back_populates='questions')
-    options: Mapped[list['Option']] = relationship('Option', back_populates='question')
-    correct_options: Mapped[list['CorrectOption']] = relationship('CorrectOption', back_populates='question')
+    subject: Mapped['Subject'] = relationship(
+        'Subject', back_populates='questions'
+    )
+    difficulty: Mapped['Difficulty'] = relationship(
+        'Difficulty', back_populates='questions'
+    )
+    options: Mapped[list['Option']] = relationship(
+        'Option', back_populates='question'
+    )
+    correct_options: Mapped[list['CorrectOption']] = relationship(
+        'CorrectOption', back_populates='question'
+    )

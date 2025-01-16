@@ -13,6 +13,6 @@ class RoleService(ServiceAbstract[Role]):
         role = self.repository.get(id)
 
         if not role:
-            raise HTTPException(status_code=404, detail="Role not found")
+            raise HTTPException(status_code=404, detail='Role not found')
 
         return role

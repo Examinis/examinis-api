@@ -11,10 +11,8 @@ class OptionRepository(RepositoryAbstract[Option]):
         super().__init__(Option, session=session)
 
     def create_correct_option(self, question_id: int, option_id: int) -> None:
-        print("HUWAHDUWAHDUAWHDUAWHDUAHWUDHUADHUWAHUDIA", flush=True)
         correct_option = CorrectOption(
-            question_id=question_id,
-            option_id=option_id
+            question_id=question_id, option_id=option_id
         )
 
         self.session.add(correct_option)

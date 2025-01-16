@@ -17,8 +17,5 @@ def get_all(role_service: RoleService = Depends(RoleService)):
 
 
 @router.get('/{role_id}', response_model=RoleSchema)
-def get_by_id(
-        role_id: int,
-        role_service: RoleService = Depends(RoleService)
-):
+def get_by_id(role_id: int, role_service: RoleService = Depends(RoleService)):
     return role_service.get(role_id)

@@ -2,6 +2,7 @@ import importlib
 import logging
 import os
 from typing import List
+
 from fastapi import FastAPI
 
 
@@ -24,9 +25,13 @@ def include_routers(app: FastAPI):
             if hasattr(mod, 'router'):
                 app.include_router(mod.router)
             else:
-                logging.warning(f"Module '{module}' does not have a 'router'. Skipping.")
+                logging.warning(
+                    f"Module '{module}' does not have a 'router'. Skipping."
+                )
 
         except ImportError as e:
             logging.error(f"Failed to import module '{module}': {e}")
         except Exception as e:
-            logging.error(f"An error occurred while including module '{module}': {e}")
+            logging.error(
+                f"An error occurred while including module '{module}': {e}"
+            )

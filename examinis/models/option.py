@@ -14,4 +14,6 @@ class Option(Base):
 
     question_id: Mapped[int] = mapped_column(ForeignKey('question.id'))
 
-    question: Mapped['Question'] = relationship('Question', back_populates='options')
+    question: Mapped['Question'] = relationship(
+        'Question', back_populates='options'
+    )

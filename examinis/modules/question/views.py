@@ -1,14 +1,9 @@
-
 from fastapi import APIRouter, Depends
 
-from examinis.common.schemas.pagination_schema import (
-    PagedResponseSchema,
-    PageParams,
-)
-from examinis.modules.question.schemas import (
-    QuestionCreateSchema,
-    QuestionSchema,
-)
+from examinis.common.schemas.pagination_schema import (PagedResponseSchema,
+                                                       PageParams)
+from examinis.modules.question.schemas import (QuestionCreateSchema,
+                                               QuestionSchema)
 from examinis.modules.question.service import QuestionService
 
 router = APIRouter(
@@ -17,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=PagedResponseSchema[QuestionSchema])
+@router.get('/', response_model=PagedResponseSchema[QuestionSchema])
 def get_questions(
     params: PageParams = Depends(PageParams),
     service: QuestionService = Depends(QuestionService),
@@ -27,15 +22,14 @@ def get_questions(
 
 @router.get('/{question_id}', response_model=QuestionSchema)
 def get_by_id(
-        question_id: int,
-        service: QuestionService = Depends(QuestionService)
+    question_id: int, service: QuestionService = Depends(QuestionService)
 ):
     return service.get(question_id)
 
 
 @router.post('/', response_model=QuestionCreateSchema)
 def create(
-        question: QuestionCreateSchema,
-        service: QuestionService = Depends(QuestionService)
+    question: QuestionCreateSchema,
+    service: QuestionService = Depends(QuestionService),
 ):
     return service.create(question)

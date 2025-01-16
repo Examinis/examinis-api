@@ -11,4 +11,6 @@ class Difficulty(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
 
-    questions: Mapped[List['Question']] = relationship('Question', back_populates='difficulty')
+    questions: Mapped[List['Question']] = relationship(
+        'Question', back_populates='difficulty'
+    )

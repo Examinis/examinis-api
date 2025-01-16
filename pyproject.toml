@@ -15,30 +15,16 @@ psycopg = {extras = ["binary"], version = "^3.2.3"}
 
 [tool.poetry.group.dev.dependencies]
 fastapi-cli = "^0.0.7"
-ruff = "^0.8.4"
 pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 taskipy = "^1.14.1"
 testcontainers = "^4.9.0"
+blue = "^0.9.1"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.ruff]
-line-length = 80
-extend-exclude = ['migrations', '__init__.py']
-
-[tool.ruff.lint]
-preview = true
-select = ['I', 'F', 'E', 'W', 'PL', 'PT']
-
-[tool.ruff.lint.per-file-ignores]
-"examinis/models/*" = ['E902', 'F821']
-
-[tool.ruff.format]
-preview = true
-quote-style = 'single'
 
 [tool.pytest.ini_options]
 pythonpath = "."
@@ -48,5 +34,4 @@ addopts = '-p no:warnings'
 run = 'fastapi dev examinis/app.py'
 test = 'pytest -s -x --cov=examinis'
 post_test = 'coverage.html'
-lint = 'ruff check . ; ruff check . --diff'
-format = 'ruff check . --fix ; ruff format .'
+format = 'blue examinis & isort examinis'
