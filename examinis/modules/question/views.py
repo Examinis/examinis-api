@@ -1,5 +1,10 @@
+
 from fastapi import APIRouter, Depends
 
+from examinis.common.schemas.pagination_schema import (
+    PagedResponseSchema,
+    PageParams,
+)
 from examinis.modules.question.schemas import (
     QuestionCreateSchema,
     QuestionSchema,
@@ -10,6 +15,14 @@ router = APIRouter(
     prefix='/question',
     tags=['question'],
 )
+
+
+@router.get("/", response_model=PagedResponseSchema[QuestionSchema])
+def get_questions(
+    params: PageParams = Depends(PageParams),
+    service: QuestionService = Depends(QuestionService),
+):
+    return service.get_all_paginated(params)
 
 
 @router.get('/{question_id}', response_model=QuestionSchema)

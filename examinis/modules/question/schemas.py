@@ -8,7 +8,7 @@ from examinis.modules.subject.schemas import SubjectSchema
 
 
 class QuestionSchema(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
 
     id: int
     text: str
