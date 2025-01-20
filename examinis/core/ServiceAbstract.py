@@ -1,7 +1,9 @@
 from typing import Generic, List, Optional, TypeVar
 
-from examinis.common.schemas.pagination_schema import (PagedResponseSchema,
-                                                       PageParams)
+from examinis.common.schemas.pagination_schema import (
+    PagedResponseSchema,
+    PageParams,
+)
 from examinis.core.RepositoryAbstract import RepositoryAbstract
 from examinis.models import Base
 
@@ -31,3 +33,6 @@ class ServiceAbstract(Generic[T]):
             size=params.size,
             results=items,
         )
+
+    def update(self, id: int, obj_in: dict) -> Optional[T]:
+        return self.repository.update(id, obj_in)

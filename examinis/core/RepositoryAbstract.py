@@ -49,3 +49,12 @@ class RepositoryAbstract(Generic[T]):
 
     def count_all(self) -> int:
         return self.session.query(self.model).count()
+
+    def update(self, id: int, obj_in: dict) -> Optional[T]:
+        instance = self.get(id)
+        if instance:
+            for key, value in obj_in.items():
+                setattr(instance, key, value)
+            self.session.commit()
+            self.session.refresh(instance)
+        return instance
