@@ -7,20 +7,26 @@ from examinis.modules.option.schemas import OptionCreateSchema, OptionSchema
 from examinis.modules.subject.schemas import SubjectSchema
 
 
-class QuestionSchema(BaseModel):
+class QuestionBaseSchema(BaseModel):
+    text: str
+    subject_id: int
+    difficulty_id: int
+
+
+class QuestionSchema(QuestionBaseSchema):
     model_config = ConfigDict(
         from_attributes=True, arbitrary_types_allowed=True
     )
 
     id: int
-    text: str
     subject: SubjectSchema
     difficulty: DifficultySchema
     options: List[OptionSchema] = Field(default_factory=list)
 
 
-class QuestionCreateSchema(BaseModel):
-    text: str
-    subject_id: int
-    difficulty_id: int
+class QuestionCreateSchema(QuestionBaseSchema):
     options: List[OptionCreateSchema]
+
+
+class QuestionUpdateSchema(QuestionBaseSchema):
+    pass
