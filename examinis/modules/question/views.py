@@ -1,15 +1,11 @@
 from fastapi import APIRouter, Depends
 
-from examinis.common.schemas.pagination_schema import (
-    PagedResponseSchema,
-    PageParams,
-)
-from examinis.modules.question.schemas import (
-    QuestionBaseSchema,
-    QuestionCreateSchema,
-    QuestionSchema,
-    QuestionUpdateSchema,
-)
+from examinis.common.schemas.pagination_schema import (PagedResponseSchema,
+                                                       PageParams)
+from examinis.modules.question.schemas import (QuestionBaseSchema,
+                                               QuestionCreateSchema,
+                                               QuestionSchema,
+                                               QuestionUpdateSchema)
 from examinis.modules.question.service import QuestionService
 
 router = APIRouter(
