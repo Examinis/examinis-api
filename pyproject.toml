@@ -21,6 +21,7 @@ taskipy = "^1.14.1"
 testcontainers = "^4.9.0"
 blue = "^0.9.1"
 isort = "^5.13.2"
+httpx = "^0.28.1"
 
 [build-system]
 requires = ["poetry-core"]
