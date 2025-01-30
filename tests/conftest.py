@@ -90,3 +90,13 @@ def question(session):
     session.refresh(question)
 
     return question
+
+@pytest.fixture
+def subject(session):
+    subject = SubjectFactory()
+
+    session.add(subject)
+    session.commit()
+    session.refresh(subject)
+
+    return subject

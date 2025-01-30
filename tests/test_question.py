@@ -6,8 +6,8 @@ def test_create_question(client, user, subject, difficulty):
         '/questions/',
         json={
             'text': 'What is the capital of France?',
-            'subject_id': 1,
-            'difficulty_id': 1,
+            'subject_id': subject.id,
+            'difficulty_id': difficulty.id,
             'options': [
                 {'description': 'Paris', 'letter': 'A', 'is_correct': True},
                 {'description': 'London', 'letter': 'B', 'is_correct': False},
@@ -21,10 +21,10 @@ def test_create_question(client, user, subject, difficulty):
     assert response.json() == {
         'id': 1,
         'text': 'What is the capital of France?',
-        'subject_id': 1,
-        'difficulty_id': 1,
-        'subject': {'id': 1, 'name': 'Geography'},
-        'difficulty': {'id': 1, 'name': 'Easy'},
+        'subject_id': subject.id,
+        'difficulty_id': difficulty.id,
+        'subject': {'id': subject.id, 'name': subject.name},
+        'difficulty': {'id': difficulty.id, 'name': difficulty.name},
         'options': [
             {
                 'id': 1,
