@@ -7,7 +7,8 @@ from testcontainers.postgres import PostgresContainer
 from examinis.app import app
 from examinis.db.config import get_session
 from examinis.models.base import Base
-from tests.factories import DifficultyFactory, SubjectFactory, UserFactory
+from tests.factories import (DifficultyFactory, QuestionFactory,
+                             SubjectFactory, UserFactory)
 
 
 @pytest.fixture
@@ -78,3 +79,14 @@ def difficulty(session):
     session.refresh(difficulty)
 
     return difficulty
+
+
+@pytest.fixture
+def question(session):
+    question = QuestionFactory()
+
+    session.add(question)
+    session.commit()
+    session.refresh(question)
+
+    return question

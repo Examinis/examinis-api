@@ -54,42 +54,30 @@ def test_create_question(client, user, subject, difficulty):
     }
 
 
-# def test_get_by_id(client):
-#     response = client.get('/questions/1')
+def test_get_by_id(client, question):
+    response = client.get('/questions/1')
 
-#     assert response.status_code == HTTPStatus.OK
-#     assert response.json() == {
-#         'id': 1,
-#         'text': 'What is the capital of France?',
-#         'subject_id': 1,
-#         'difficulty_id': 1,
-#         'options': [
-#             {
-#                 'id': 1,
-#                 'description': 'Paris',
-#                 'letter': 'A',
-#                 'is_correct': True,
-#             },
-#             {
-#                 'id': 2,
-#                 'description': 'London',
-#                 'letter': 'B',
-#                 'is_correct': False,
-#             },
-#             {
-#                 'id': 3,
-#                 'description': 'Berlin',
-#                 'letter': 'C',
-#                 'is_correct': False,
-#             },
-#             {
-#                 'id': 4,
-#                 'description': 'Madrid',
-#                 'letter': 'D',
-#                 'is_correct': False,
-#             },
-#         ],
-#     }
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        'id': question.id,
+        'text': question.text,
+        'subject_id': question.subject_id,
+        'difficulty_id': question.difficulty_id,
+        'subject': {'id': question.subject.id, 'name': question.subject.name},
+        'difficulty': {
+            'id': question.difficulty.id,
+            'name': question.difficulty.name,
+        },
+        'options': [
+            {
+                'id': option.id,
+                'description': option.description,
+                'letter': option.letter,
+                'is_correct': option.is_correct,
+            }
+            for option in question.options
+        ],
+    }
 
 
 def test_get_by_invalid_id(client):
