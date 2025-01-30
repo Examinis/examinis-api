@@ -25,7 +25,7 @@ class QuestionService(ServiceAbstract[Question]):
         return question
 
     def create(self, question: QuestionCreateSchema) -> Question:
-        question_in = question.dict()
+        question_in = question.model_dump()
         question_in.pop('options')
         question_in['user_id'] = 1
 

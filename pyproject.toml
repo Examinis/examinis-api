@@ -22,6 +22,7 @@ testcontainers = "^4.9.0"
 blue = "^0.9.1"
 isort = "^5.13.2"
 httpx = "^0.28.1"
+factory-boy = "^3.3.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -35,4 +36,7 @@ addopts = '-p no:warnings'
 run = 'fastapi dev examinis/app.py'
 test = 'pytest -s -x --cov=examinis'
 post_test = 'coverage.html'
-format = 'blue examinis & isort examinis'
+format = 'blue examinis & isort examinis & blue tests & isort tests'
+db-upgrade = 'alembic upgrade head'
+db-downgrade-base = 'alembic downgrade base'
+db-downgrade = 'alembic downgrade -1'
