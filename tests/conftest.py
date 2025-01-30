@@ -28,5 +28,5 @@ def session(engine: Engine):
 
     with Session(engine) as session:
         yield session
-        
+
     Base.metadata.drop_all(engine)

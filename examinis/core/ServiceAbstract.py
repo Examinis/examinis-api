@@ -1,7 +1,9 @@
 from typing import Generic, List, Optional, TypeVar
 
-from examinis.common.schemas.pagination_schema import (PagedResponseSchema,
-                                                       PageParams)
+from examinis.common.schemas.pagination_schema import (
+    PagedResponseSchema,
+    PageParams,
+)
 from examinis.core.RepositoryAbstract import RepositoryAbstract
 from examinis.models import Base
 
