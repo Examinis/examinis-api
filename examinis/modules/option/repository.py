@@ -22,7 +22,5 @@ class OptionRepository(RepositoryAbstract[Option]):
         self.session.query(CorrectOption).filter_by(
             question_id=question_id
         ).delete()
-        self.session.query(Option).filter_by(
-            question_id=question_id
-        ).delete()
+        self.session.query(Option).filter_by(question_id=question_id).delete()
         self.session.commit()

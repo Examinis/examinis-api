@@ -51,6 +51,7 @@ def update(
 ):
     return service.update(question_id, question.model_dump())
 
+
 @router.delete('/{question_id}', status_code=HTTPStatus.NO_CONTENT)
 def delete(
     question_id: int,

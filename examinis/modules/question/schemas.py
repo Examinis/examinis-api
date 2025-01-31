@@ -21,9 +21,9 @@ class QuestionSchema(BaseModel):
     )
 
     id: int
+    text: str
+    created_at: datetime
 
-    created_at: datetime 
-    
     user: UserSchema
     subject: SubjectSchema
     difficulty: DifficultySchema

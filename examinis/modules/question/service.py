@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import Depends, HTTPException
 
 from examinis.core.ServiceAbstract import ServiceAbstract
@@ -28,6 +30,18 @@ class QuestionService(ServiceAbstract[Question]):
         question_in = question.model_dump()
         question_in.pop('options')
         question_in['user_id'] = 1
+
+        if len(question.options) < 2:
+            raise HTTPException(
+                status_code=HTTPStatus.BAD_REQUEST,
+                detail='At least two options are required',
+            )
+
+        if len(question.options) > 5:
+            raise HTTPException(
+                status_code=HTTPStatus.BAD_REQUEST,
+                detail='Maximum of five options allowed',
+            )
 
         question_db = self.repository.create(question_in)
         options = self.option_service.create_by_list(

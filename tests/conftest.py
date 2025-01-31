@@ -91,6 +91,7 @@ def question(session):
 
     return question
 
+
 @pytest.fixture
 def subject(session):
     subject = SubjectFactory()
