@@ -22,7 +22,7 @@ INSERT INTO public.role (name) VALUES
 -- Insert User Status
 ALTER SEQUENCE user_status_id_seq RESTART with 1;
 INSERT INTO public.user_status (name) VALUES
-('Active'), ('Pending'), ('Inactive');
+('Active'), ('Pending'), ('Inactive');	
 
 -- Insert User
 ALTER SEQUENCE user_id_seq RESTART with 1;
