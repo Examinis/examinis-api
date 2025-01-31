@@ -36,3 +36,8 @@ class QuestionService(ServiceAbstract[Question]):
 
         question_db.options = options
         return question_db
+
+    def delete(self, id: int) -> None:
+        question = self.get(id)
+        self.option_service.delete_by_question_id(question.id)
+        self.repository.delete(id)

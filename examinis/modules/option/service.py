@@ -40,3 +40,6 @@ class OptionService(ServiceAbstract[Option]):
                 )
 
         return options_db
+
+    def delete_by_question_id(self, question_id: int) -> None:
+        self.repository.delete_by_question_id(question_id)

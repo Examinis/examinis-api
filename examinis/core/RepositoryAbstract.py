@@ -58,3 +58,9 @@ class RepositoryAbstract(Generic[T]):
             self.session.commit()
             self.session.refresh(instance)
         return instance
+
+    def delete(self, id: int) -> None:
+        instance = self.get(id)
+        if instance:
+            self.session.delete(instance)
+            self.session.commit()

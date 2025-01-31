@@ -17,3 +17,12 @@ class OptionRepository(RepositoryAbstract[Option]):
 
         self.session.add(correct_option)
         self.session.commit()
+
+    def delete_by_question_id(self, question_id: int) -> None:
+        self.session.query(CorrectOption).filter_by(
+            question_id=question_id
+        ).delete()
+        self.session.query(Option).filter_by(
+            question_id=question_id
+        ).delete()
+        self.session.commit()
