@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
 
 from examinis.common.schemas.pagination_schema import (
     PagedResponseSchema,
@@ -60,3 +60,12 @@ def delete(
     service: QuestionService = Depends(QuestionService),
 ):
     return service.delete(question_id)
+
+
+@router.post('/upload-image', status_code=HTTPStatus.OK)
+async def upload_image(
+    id: int,
+    image: UploadFile,
+    service: QuestionService = Depends(QuestionService),
+):
+    return await service.upload_image(id, image)

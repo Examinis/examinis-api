@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel, field_validator
+from pydantic import field_validator
 
 from examinis.modules.option.schemas import OptionInSchema
 

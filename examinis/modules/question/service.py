@@ -1,7 +1,11 @@
-from http import HTTPStatus
+import os
+from uuid import uuid4
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, UploadFile
 
+from examinis.common.validators.image_upload_validator import (
+    ImageUploadValidation,
+)
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.question import Question
 from examinis.modules.option.service import OptionService
@@ -39,6 +43,11 @@ class QuestionService(ServiceAbstract[Question]):
             question_db.id, question.options
         )
 
+        if question.image:
+            print('Image upload not implemented yet')
+            print(question.image.filename)
+            print(question.image.size)
+
         question_db.options = options
         return question_db
 
@@ -64,3 +73,20 @@ class QuestionService(ServiceAbstract[Question]):
         question_db.options = options
 
         return question_db
+
+    async def upload_image(self, question_id: int, image: UploadFile):
+        ImageUploadValidation.validate_image(image)
+
+        question = self.get(question_id)
+
+        if question.image_path:
+            os.remove(question.image_path)
+
+        image_extension = image.filename.split('.')[-1]
+        image.filename = f'{uuid4()}.{image_extension}'
+        image_path = f'uploaded_images/{image.filename}'
+
+        with open(image_path, 'wb') as buffer:
+            buffer.write(await image.read())
+
+        return self.repository.update(question_id, {'image_path': image_path})

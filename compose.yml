@@ -19,6 +19,7 @@ services:
     build: .
     volumes:
       - .:/app
+      - ./uploaded_images:/app/uploaded_images
     ports:
       - "8000:8000"
     depends_on:

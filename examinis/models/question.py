@@ -15,6 +15,7 @@ class Question(Base):
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.now, onupdate=datetime.now
     )
+    image_path: Mapped[str] = mapped_column(nullable=True)
 
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
     subject_id: Mapped[int] = mapped_column(
