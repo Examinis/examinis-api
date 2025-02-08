@@ -7,7 +7,6 @@ from examinis.common.schemas.pagination_schema import (
     PageParams,
 )
 from examinis.modules.question.schemas import (
-    QuestionBaseSchema,
     QuestionCreateSchema,
     QuestionSchema,
     QuestionUpdateSchema,
@@ -47,7 +46,7 @@ def create(
     return service.create(question)
 
 
-@router.put('/', response_model=QuestionBaseSchema)
+@router.put('/', response_model=QuestionSchema)
 def update(
     question: QuestionUpdateSchema,
     service: QuestionService = Depends(QuestionService),

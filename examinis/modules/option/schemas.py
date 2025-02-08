@@ -10,14 +10,7 @@ class OptionSchema(BaseModel):
     is_correct: bool
 
 
-class OptionCreateSchema(BaseModel):
-    description: str
-    letter: str
-    is_correct: bool
-
-
-class OptionUpdateSchema(BaseModel):
-    id: Optional[int] = None
+class OptionInSchema(BaseModel):
     description: str
     letter: str
     is_correct: bool
