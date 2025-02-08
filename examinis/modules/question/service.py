@@ -58,6 +58,13 @@ class QuestionService(ServiceAbstract[Question]):
     def delete(self, id: int) -> None:
         question = self.get(id)
         self.option_service.delete_by_question_id(question.id)
+
+        if question.image_path:
+            try:
+                os.remove(question.image_path)
+            except FileNotFoundError:
+                pass
+
         self.repository.delete(id)
 
     def update(self, question: QuestionUpdateSchema) -> Question:
@@ -84,7 +91,10 @@ class QuestionService(ServiceAbstract[Question]):
         question = self.get(question_id)
 
         if question.image_path:
-            os.remove(question.image_path)
+            try:
+                os.remove(question.image_path)
+            except FileNotFoundError:
+                pass
 
         image_extension = image.filename.split('.')[-1]
         image.filename = f'{uuid4()}.{image_extension}'
