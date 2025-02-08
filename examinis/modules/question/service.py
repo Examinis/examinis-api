@@ -47,11 +47,6 @@ class QuestionService(ServiceAbstract[Question]):
             question_db.id, question.options
         )
 
-        if question.image:
-            print('Image upload not implemented yet')
-            print(question.image.filename)
-            print(question.image.size)
-
         question_db.options = options
         return question_db
 
