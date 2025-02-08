@@ -1,7 +1,9 @@
+from http import HTTPStatus
 import os
 from uuid import uuid4
 
 from fastapi import Depends, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 
 from examinis.common.validators.image_upload_validator import (
     ImageUploadValidation,
@@ -29,7 +31,9 @@ class QuestionService(ServiceAbstract[Question]):
         question = self.repository.get(id)
 
         if not question:
-            raise HTTPException(status_code=404, detail='Question not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUNDOT, detail='Question not found'
+            )
 
         return question
 
@@ -90,3 +94,17 @@ class QuestionService(ServiceAbstract[Question]):
             buffer.write(await image.read())
 
         return self.repository.update(question_id, {'image_path': image_path})
+
+    def get_image(self, question_id: int):
+        question = self.get(question_id)
+
+        if not question.image_path:
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND, detail='Image not found'
+            )
+
+        image_extension = question.image_path.split('.')[-1]
+
+        return FileResponse(
+            path=question.image_path, media_type=f'image/{image_extension}'
+        )

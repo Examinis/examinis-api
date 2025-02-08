@@ -69,3 +69,11 @@ async def upload_image(
     service: QuestionService = Depends(QuestionService),
 ):
     return await service.upload_image(id, image)
+
+
+@router.get('/{question_id}/image', status_code=HTTPStatus.OK)
+def get_question_image(
+    question_id: int,
+    service: QuestionService = Depends(QuestionService),
+):
+    return service.get_image(question_id)
