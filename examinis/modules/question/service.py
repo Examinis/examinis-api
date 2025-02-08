@@ -6,7 +6,10 @@ from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.question import Question
 from examinis.modules.option.service import OptionService
 from examinis.modules.question.repository import QuestionRepository
-from examinis.modules.question.schemas import QuestionCreateSchema
+from examinis.modules.question.schemas import (
+    QuestionCreateSchema,
+    QuestionUpdateSchema,
+)
 
 
 class QuestionService(ServiceAbstract[Question]):
@@ -31,18 +34,6 @@ class QuestionService(ServiceAbstract[Question]):
         question_in.pop('options')
         question_in['user_id'] = 1
 
-        if len(question.options) < 2:
-            raise HTTPException(
-                status_code=HTTPStatus.BAD_REQUEST,
-                detail='At least two options are required',
-            )
-
-        if len(question.options) > 5:
-            raise HTTPException(
-                status_code=HTTPStatus.BAD_REQUEST,
-                detail='Maximum of five options allowed',
-            )
-
         question_db = self.repository.create(question_in)
         options = self.option_service.create_by_list(
             question_db.id, question.options
@@ -55,3 +46,21 @@ class QuestionService(ServiceAbstract[Question]):
         question = self.get(id)
         self.option_service.delete_by_question_id(question.id)
         self.repository.delete(id)
+
+    def update(self, question: QuestionUpdateSchema) -> Question:
+        question_db = self.get(question.id)
+
+        question_in = question.model_dump()
+        question_in.pop('options')
+
+        question_db = self.repository.update(question_db.id, question_in)
+
+        self.option_service.delete_by_question_id(question.id)
+
+        options = self.option_service.create_by_list(
+            question_db.id, question.options
+        )
+
+        question_db.options = options
+
+        return question_db

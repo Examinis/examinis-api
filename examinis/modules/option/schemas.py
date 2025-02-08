@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -8,7 +10,7 @@ class OptionSchema(BaseModel):
     is_correct: bool
 
 
-class OptionCreateSchema(BaseModel):
+class OptionInSchema(BaseModel):
     description: str
     letter: str
     is_correct: bool

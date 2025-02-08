@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from typing import List
 
 from fastapi import Depends, HTTPException
@@ -5,7 +6,7 @@ from fastapi import Depends, HTTPException
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.option import Option
 from examinis.modules.option.repository import OptionRepository
-from examinis.modules.option.schemas import OptionCreateSchema
+from examinis.modules.option.schemas import OptionInSchema
 
 
 class OptionService(ServiceAbstract[Option]):
@@ -18,17 +19,20 @@ class OptionService(ServiceAbstract[Option]):
         option = self.repository.get(id)
 
         if not option:
-            raise HTTPException(status_code=404, detail='Option not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND,
+                detail='Option not found',
+            )
 
         return option
 
     def create_by_list(
-        self, question_id: int, options: List[OptionCreateSchema]
+        self, question_id: int, options: List[OptionInSchema]
     ) -> List[Option]:
         options_db = []
 
         for option in options:
-            option_dict = option.dict()
+            option_dict = option.model_dump()
             option_dict['question_id'] = question_id
 
             option_db = self.create(option_dict)

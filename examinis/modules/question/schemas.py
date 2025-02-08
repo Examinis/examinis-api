@@ -4,7 +4,8 @@ from typing import List
 from pydantic import BaseModel, ConfigDict, Field
 
 from examinis.modules.difficulty.schemas import DifficultySchema
-from examinis.modules.option.schemas import OptionCreateSchema, OptionSchema
+from examinis.modules.option.schemas import OptionInSchema, OptionSchema
+from examinis.modules.option.validators import OptionsValidationMixin
 from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.user.schemas import UserSchema
 
@@ -17,7 +18,8 @@ class QuestionBaseSchema(BaseModel):
 
 class QuestionSchema(BaseModel):
     model_config = ConfigDict(
-        from_attributes=True, arbitrary_types_allowed=True
+        from_attributes=True,
+        arbitrary_types_allowed=True,
     )
 
     id: int
@@ -30,9 +32,10 @@ class QuestionSchema(BaseModel):
     options: List[OptionSchema] = Field(default_factory=list)
 
 
-class QuestionCreateSchema(QuestionBaseSchema):
-    options: List[OptionCreateSchema]
+class QuestionCreateSchema(QuestionBaseSchema, OptionsValidationMixin):
+    options: List[OptionInSchema]
 
 
-class QuestionUpdateSchema(QuestionBaseSchema):
-    pass
+class QuestionUpdateSchema(QuestionBaseSchema, OptionsValidationMixin):
+    id: int
+    options: List[OptionInSchema]
