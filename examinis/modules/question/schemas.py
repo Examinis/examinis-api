@@ -39,3 +39,9 @@ class QuestionCreateSchema(QuestionBaseSchema, OptionsValidationMixin):
 class QuestionUpdateSchema(QuestionBaseSchema, OptionsValidationMixin):
     id: int
     options: List[OptionInSchema]
+
+
+class QuestionExamSchema(BaseModel):
+    id: int
+    text: str
+    options: List[OptionSchema]
