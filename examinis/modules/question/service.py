@@ -1,7 +1,13 @@
 from http import HTTPStatus
+import os
+from uuid import uuid4
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 
+from examinis.common.validators.image_upload_validator import (
+    ImageUploadValidation,
+)
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.question import Question
 from examinis.modules.option.service import OptionService
@@ -25,7 +31,9 @@ class QuestionService(ServiceAbstract[Question]):
         question = self.repository.get(id)
 
         if not question:
-            raise HTTPException(status_code=404, detail='Question not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUNDOT, detail='Question not found'
+            )
 
         return question
 
@@ -45,6 +53,13 @@ class QuestionService(ServiceAbstract[Question]):
     def delete(self, id: int) -> None:
         question = self.get(id)
         self.option_service.delete_by_question_id(question.id)
+
+        if question.image_path:
+            try:
+                os.remove(question.image_path)
+            except FileNotFoundError:
+                pass
+
         self.repository.delete(id)
 
     def update(self, question: QuestionUpdateSchema) -> Question:
@@ -64,3 +79,37 @@ class QuestionService(ServiceAbstract[Question]):
         question_db.options = options
 
         return question_db
+
+    async def upload_image(self, question_id: int, image: UploadFile):
+        ImageUploadValidation.validate_image(image)
+
+        question = self.get(question_id)
+
+        if question.image_path:
+            try:
+                os.remove(question.image_path)
+            except FileNotFoundError:
+                pass
+
+        image_extension = image.filename.split('.')[-1]
+        image.filename = f'{uuid4()}.{image_extension}'
+        image_path = f'uploaded_images/{image.filename}'
+
+        with open(image_path, 'wb') as buffer:
+            buffer.write(await image.read())
+
+        return self.repository.update(question_id, {'image_path': image_path})
+
+    def get_image(self, question_id: int):
+        question = self.get(question_id)
+
+        if not question.image_path:
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND, detail='Image not found'
+            )
+
+        image_extension = question.image_path.split('.')[-1]
+
+        return FileResponse(
+            path=question.image_path, media_type=f'image/{image_extension}'
+        )

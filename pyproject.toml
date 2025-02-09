@@ -12,6 +12,7 @@ sqlalchemy = "^2.0.36"
 alembic = "^1.14.0"
 pydantic-settings = "^2.7.0"
 psycopg = {extras = ["binary"], version = "^3.2.3"}
+python-multipart = "^0.0.20"
 
 [tool.poetry.group.dev.dependencies]
 fastapi-cli = "^0.0.7"
