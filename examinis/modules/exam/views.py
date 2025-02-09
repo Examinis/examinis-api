@@ -2,7 +2,11 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-from examinis.modules.exam.schemas import ExamManualCreationSchema, ExamSchema
+from examinis.modules.exam.schemas import (
+    ExamAutomaticCreationSchema,
+    ExamManualCreationSchema,
+    ExamSchema,
+)
 from examinis.modules.exam.service import ExamService
 
 router = APIRouter(
@@ -27,3 +31,11 @@ def create_manual(
     exam_service: ExamService = Depends(ExamService),
 ):
     return exam_service.create_manual(exam)
+
+
+@router.post('/automatic', response_model=ExamSchema)
+def create_automatic(
+    exam: ExamAutomaticCreationSchema,
+    exam_service: ExamService = Depends(ExamService),
+):
+    return exam_service.create_automatic(exam)

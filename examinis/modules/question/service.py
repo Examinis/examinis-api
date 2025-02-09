@@ -118,3 +118,8 @@ class QuestionService(ServiceAbstract[Question]):
 
     def get_by_list(self, ids: List[int]) -> List[Question]:
         return self.repository.get_by_list(ids)
+
+    def get_random_by_subject(
+        self, subject_id: int, amount: int
+    ) -> List[Question]:
+        return self.repository.get_random_by_subject(subject_id, amount)

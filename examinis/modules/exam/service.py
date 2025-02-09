@@ -5,7 +5,10 @@ from fastapi import Depends, HTTPException
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.exam import Exam
 from examinis.modules.exam.repository import ExamRepository
-from examinis.modules.exam.schemas import ExamManualCreationSchema
+from examinis.modules.exam.schemas import (
+    ExamAutomaticCreationSchema,
+    ExamManualCreationSchema,
+)
 from examinis.modules.question.service import QuestionService
 
 
@@ -39,8 +42,18 @@ class ExamService(ServiceAbstract[Exam]):
                 detail='Invalid question ids',
             )
 
-        exam_in = exam.model_dump()
-        exam_in.pop('questions')
+        exam_in = exam.model_dump(exclude={'questions'})
+        exam_in['user_id'] = 2   # Professor id at the moment
+
+        return self.repository.create_manual(exam_in, questions)
+
+    def create_automatic(self, exam: ExamAutomaticCreationSchema) -> Exam:
+        questions = self.question_service.get_random_by_subject(
+            exam.subject_id,
+            exam.amount,
+        )
+
+        exam_in = exam.model_dump(exclude={'amount'})
         exam_in['user_id'] = 2   # Professor id at the moment
 
         return self.repository.create_manual(exam_in, questions)

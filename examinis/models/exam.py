@@ -25,6 +25,7 @@ class Exam(Base):
         default=datetime.now, onupdate=datetime.now
     )
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    subject_id: Mapped[int] = mapped_column(ForeignKey('subject.id'))
 
     user: Mapped['User'] = relationship('User', back_populates='exams')
     questions: Mapped[List['Question']] = relationship(

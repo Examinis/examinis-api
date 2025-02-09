@@ -14,3 +14,9 @@ class ExamRepository(RepositoryAbstract[Exam]):
         exam_db.questions = questions
         self.session.commit()
         return exam_db
+
+    def create_automatic(self, exam: dict, questions: list) -> Exam:
+        exam_db = self.create(exam)
+        exam_db.questions = questions
+        self.session.commit()
+        return exam_db
