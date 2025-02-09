@@ -1,6 +1,7 @@
 from .base import Base
 from .correct_option import CorrectOption
 from .difficulty import Difficulty
+from .exam import Exam
 from .option import Option
 from .question import Question
 from .role import Role

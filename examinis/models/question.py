@@ -38,3 +38,6 @@ class Question(Base):
     correct_options: Mapped[list['CorrectOption']] = relationship(
         'CorrectOption', back_populates='question'
     )
+    exams: Mapped[list['Exam']] = relationship(
+        'Exam', back_populates='questions', lazy='dynamic'
+    )

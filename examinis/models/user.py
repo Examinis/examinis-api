@@ -29,3 +29,4 @@ class User(Base):
     questions: Mapped[list['Question']] = relationship(
         'Question', back_populates='user'
     )
+    exams: Mapped[list['Exam']] = relationship('Exam', back_populates='user')
