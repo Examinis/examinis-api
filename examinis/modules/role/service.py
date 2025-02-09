@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import Depends, HTTPException
 
 from examinis.core.ServiceAbstract import ServiceAbstract
@@ -13,6 +15,9 @@ class RoleService(ServiceAbstract[Role]):
         role = self.repository.get(id)
 
         if not role:
-            raise HTTPException(status_code=404, detail='Role not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND,
+                detail='Role not found',
+            )
 
         return role

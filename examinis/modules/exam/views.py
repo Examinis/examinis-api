@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-from examinis.modules.exam.schemas import ExamSchema
+from examinis.modules.exam.schemas import ExamManualCreationSchema, ExamSchema
 from examinis.modules.exam.service import ExamService
 
 router = APIRouter(
@@ -19,3 +19,11 @@ def get_all(exam_service: ExamService = Depends(ExamService)):
 @router.get('/{exam_id}', response_model=ExamSchema)
 def get_by_id(exam_id: int, exam_service: ExamService = Depends(ExamService)):
     return exam_service.get(exam_id)
+
+
+@router.post('/manual', response_model=ExamSchema)
+def create_manual(
+    exam: ExamManualCreationSchema,
+    exam_service: ExamService = Depends(ExamService),
+):
+    return exam_service.create_manual(exam)

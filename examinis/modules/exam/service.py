@@ -1,18 +1,46 @@
+from http import HTTPStatus
+
 from fastapi import Depends, HTTPException
 
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.exam import Exam
 from examinis.modules.exam.repository import ExamRepository
+from examinis.modules.exam.schemas import ExamManualCreationSchema
+from examinis.modules.question.service import QuestionService
 
 
 class ExamService(ServiceAbstract[Exam]):
-    def __init__(self, repository: ExamRepository = Depends(ExamRepository)):
+    def __init__(
+        self,
+        repository: ExamRepository = Depends(ExamRepository),
+        question_service: QuestionService = Depends(QuestionService),
+    ):
         super().__init__(repository)
+        self.repository = repository
+        self.question_service = question_service
 
     def get(self, id: int) -> Exam:
         exam = self.repository.get(id)
 
         if not exam:
-            raise HTTPException(status_code=404, detail='Exam not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND,
+                detail='Exam not found',
+            )
 
         return exam
+
+    def create_manual(self, exam: ExamManualCreationSchema) -> Exam:
+        questions = self.question_service.get_by_list(exam.questions)
+
+        if len(questions) != len(exam.questions):
+            raise HTTPException(
+                status_code=HTTPStatus.BAD_REQUEST,
+                detail='Invalid question ids',
+            )
+
+        exam_in = exam.model_dump()
+        exam_in.pop('questions')
+        exam_in['user_id'] = 2   # Professor id at the moment
+
+        return self.repository.create_manual(exam_in, questions)
