@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from examinis.modules.exam.validators import ExamValidationMixin
 from examinis.modules.question.schemas import QuestionExamSchema
+from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.user.schemas import UserSchema
 
 
@@ -19,6 +20,7 @@ class ExamSchema(BaseModel):
     instructions: Optional[str]
     created_at: datetime
     user: UserSchema
+    subject: SubjectSchema
     questions: List[QuestionExamSchema]
 
 

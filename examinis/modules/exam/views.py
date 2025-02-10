@@ -10,8 +10,8 @@ from examinis.modules.exam.schemas import (
 from examinis.modules.exam.service import ExamService
 
 router = APIRouter(
-    prefix='/exam',
-    tags=['exam'],
+    prefix='/exams',
+    tags=['exams'],
 )
 
 

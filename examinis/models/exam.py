@@ -28,6 +28,9 @@ class Exam(Base):
     subject_id: Mapped[int] = mapped_column(ForeignKey('subject.id'))
 
     user: Mapped['User'] = relationship('User', back_populates='exams')
+    subject: Mapped['Subject'] = relationship(
+        'Subject', back_populates='exams'
+    )
     questions: Mapped[List['Question']] = relationship(
         'Question',
         secondary=question_exam_association,
