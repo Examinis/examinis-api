@@ -12,8 +12,8 @@ class ExamValidationMixin:
     @field_validator('questions')
     @classmethod
     def validate_questions(
-        cls, questions: List[QuestionExamSchema]
-    ) -> List[QuestionExamSchema]:
+        cls, questions: List[int]
+    ) -> List[int]:
         if not (MIN_QUESTION <= len(questions) <= MAX_QUESTION):
             raise ValueError(
                 f'A Exam must have between {MIN_QUESTION} and {MAX_QUESTION} questions.'

@@ -23,26 +23,17 @@ class ExamSchema(BaseModel):
     subject: SubjectSchema
     questions: List[QuestionExamSchema]
 
-
-class ExamManualCreationSchema(BaseModel, ExamValidationMixin):
+class ExamCreationSchema(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
     title: str = Field(str, min_length=1, max_length=100)
     instructions: Optional[str] = Field(None, max_length=512)
     subject_id: int
-    questions: List[QuestionExamSchema]
 
 
-class ExamAutomaticCreationSchema(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+class ExamManualCreationSchema(ExamCreationSchema, ExamValidationMixin):
+    questions: List[int]
 
-    title: str = Field(str, min_length=1, max_length=100)
-    instructions: Optional[str] = Field(None, max_length=512)
-    subject_id: int
+
+class ExamAutomaticCreationSchema(ExamCreationSchema):
     amount: int = Field(5, ge=5, le=20)
-
-
-class ExamUpdateSchema(BaseModel):
-    model_config = ConfigDict(extra='forbid')
-
-    name: str
