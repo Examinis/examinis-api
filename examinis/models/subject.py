@@ -14,3 +14,6 @@ class Subject(Base):
     questions: Mapped[List['Question']] = relationship(
         'Question', back_populates='subject'
     )
+    exams: Mapped[List['Exam']] = relationship(
+        'Exam', back_populates='subject'
+    )

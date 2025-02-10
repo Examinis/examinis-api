@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -26,6 +27,7 @@ class User(Base):
         'UserStatus', back_populates='users'
     )
     role: Mapped['Role'] = relationship('Role', back_populates='users')
-    questions: Mapped[list['Question']] = relationship(
+    questions: Mapped[List['Question']] = relationship(
         'Question', back_populates='user'
     )
+    exams: Mapped[List['Exam']] = relationship('Exam', back_populates='user')

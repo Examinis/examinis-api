@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import Depends, HTTPException
 
 from examinis.core.ServiceAbstract import ServiceAbstract
@@ -15,6 +17,9 @@ class SubjectService(ServiceAbstract[Subject]):
         subject = self.repository.get(id)
 
         if not subject:
-            raise HTTPException(status_code=404, detail='Subject not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND,
+                detail='Subject not found',
+            )
 
         return subject

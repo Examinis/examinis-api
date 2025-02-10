@@ -4,7 +4,11 @@ from typing import List
 from pydantic import BaseModel, ConfigDict, Field
 
 from examinis.modules.difficulty.schemas import DifficultySchema
-from examinis.modules.option.schemas import OptionInSchema, OptionSchema
+from examinis.modules.option.schemas import (
+    OptionExamSchema,
+    OptionInSchema,
+    OptionSchema,
+)
 from examinis.modules.option.validators import OptionsValidationMixin
 from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.user.schemas import UserSchema
@@ -39,3 +43,9 @@ class QuestionCreateSchema(QuestionBaseSchema, OptionsValidationMixin):
 class QuestionUpdateSchema(QuestionBaseSchema, OptionsValidationMixin):
     id: int
     options: List[OptionInSchema]
+
+
+class QuestionExamSchema(BaseModel):
+    id: int
+    text: str
+    options: List[OptionExamSchema]

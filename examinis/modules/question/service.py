@@ -1,5 +1,6 @@
-from http import HTTPStatus
 import os
+from http import HTTPStatus
+from typing import List
 from uuid import uuid4
 
 from fastapi import Depends, HTTPException, UploadFile
@@ -26,13 +27,14 @@ class QuestionService(ServiceAbstract[Question]):
     ):
         super().__init__(repository)
         self.option_service = option_service
+        self.repository = repository
 
     def get(self, id: int) -> Question:
         question = self.repository.get(id)
 
         if not question:
             raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUNDOT, detail='Question not found'
+                status_code=HTTPStatus.NOT_FOUND, detail='Question not found'
             )
 
         return question
@@ -113,3 +115,11 @@ class QuestionService(ServiceAbstract[Question]):
         return FileResponse(
             path=question.image_path, media_type=f'image/{image_extension}'
         )
+
+    def get_by_list(self, ids: List[int]) -> List[Question]:
+        return self.repository.get_by_list(ids)
+
+    def get_random_by_subject(
+        self, subject_id: int, amount: int
+    ) -> List[Question]:
+        return self.repository.get_random_by_subject(subject_id, amount)

@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import Depends, HTTPException
 
 from examinis.core.ServiceAbstract import ServiceAbstract
@@ -15,6 +17,9 @@ class DifficultyService(ServiceAbstract[Difficulty]):
         difficulty = self.repository.get(id)
 
         if not difficulty:
-            raise HTTPException(status_code=404, detail='Difficulty not found')
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND,
+                detail='Difficulty not found',
+            )
 
         return difficulty

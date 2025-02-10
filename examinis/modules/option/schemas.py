@@ -14,3 +14,9 @@ class OptionInSchema(BaseModel):
     description: str
     letter: str
     is_correct: bool
+
+
+class OptionExamSchema(BaseModel):
+    id: int
+    description: str
+    letter: str
