@@ -2,9 +2,12 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
+from examinis.common.schemas.pagination_schema import PageParams, PagedResponseSchema
 from examinis.modules.exam.schemas import (
     ExamAutomaticCreationSchema,
+    ExamListSchema,
     ExamManualCreationSchema,
+    ExamPageParams,
     ExamSchema,
 )
 from examinis.modules.exam.service import ExamService
@@ -15,9 +18,11 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[ExamSchema])
-def get_all(exam_service: ExamService = Depends(ExamService)):
-    return exam_service.get_all()
+@router.get('/', response_model=PagedResponseSchema[ExamListSchema])
+def get_all(
+    params: ExamPageParams = Depends(ExamPageParams),
+    exam_service: ExamService = Depends(ExamService)):
+    return exam_service.get_all_paginated(params)
 
 
 @router.get('/{exam_id}', response_model=ExamSchema)
