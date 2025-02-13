@@ -41,7 +41,7 @@ class ExamService(ServiceAbstract[Exam]):
 
         return exam
 
-    def get_all_paginated(
+    def  get_all_paginated(
         self, params: ExamPageParams
     ) -> PagedResponseSchema[ExamListSchema]:
         items = self.repository.get_all_paginated(params)

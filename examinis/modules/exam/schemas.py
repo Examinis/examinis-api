@@ -48,7 +48,6 @@ class ExamListSchema(BaseModel):
 
     id: int
     title: str
-    instructions: Optional[str] = None
     user: UserSchema
     subject: SubjectSchema
     created_at: datetime
