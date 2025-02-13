@@ -2,7 +2,10 @@ from http import HTTPStatus
 
 from fastapi import Depends, HTTPException
 
-from examinis.common.schemas.pagination_schema import PageParams, PagedResponseSchema
+from examinis.common.schemas.pagination_schema import (
+    PagedResponseSchema,
+    PageParams,
+)
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.exam import Exam
 from examinis.modules.exam.repository import ExamRepository
@@ -13,6 +16,8 @@ from examinis.modules.exam.schemas import (
     ExamPageParams,
 )
 from examinis.modules.question.service import QuestionService
+from examinis.modules.subject.schemas import SubjectSchema
+from examinis.modules.user.schemas import UserSchema
 
 
 class ExamService(ServiceAbstract[Exam]):
@@ -36,33 +41,20 @@ class ExamService(ServiceAbstract[Exam]):
 
         return exam
 
-    def get_all_paginated(self, params: ExamPageParams) -> PagedResponseSchema[ExamListSchema]:
+    def get_all_paginated(
+        self, params: ExamPageParams
+    ) -> PagedResponseSchema[ExamListSchema]:
         items = self.repository.get_all_paginated(params)
         total = self.repository.count_all()
 
-        transformed_items = [
-        {
-            'id': exam.id,
-            'title': exam.title,
-            'user': {
-                'id': exam.user.id,
-                'name': exam.user.name,
-            },
-            'subject': {
-                'id': exam.subject.id,
-                'name': exam.subject.name,
-            },
-            'created_at': exam.created_at,
-            'total_question': len(exam.questions),
-        }
-        for exam in items
-    ]
+        results = [ExamListSchema.from_orm(item) for item in items]
 
         return PagedResponseSchema[ExamListSchema](
             total=total,
             page=params.page,
             size=params.size,
-            results=items,)
+            results=results,
+        )
 
     def create_manual(self, exam: ExamManualCreationSchema) -> Exam:
         questions = self.question_service.get_by_list(exam.questions)

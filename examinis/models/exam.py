@@ -36,3 +36,7 @@ class Exam(Base):
         secondary=question_exam_association,
         back_populates='exams',
     )
+
+    @property
+    def total_question(self):
+        return len(self.questions)

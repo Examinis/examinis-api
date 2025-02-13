@@ -31,8 +31,10 @@ class RepositoryAbstract(Generic[T]):
     def get_all(self) -> List[T]:
         return self.session.query(self.model).all()
 
-    def get_all_paginated(self, params: PageParams) -> List[T]:
-        query = self.session.query(self.model)
+    def get_all_paginated(self, params: PageParams, query=None) -> List[T]:
+        if not query:
+            query = self.session.query(self.model)
+
         if params.order_by:
             column = getattr(self.model, params.order_by, None)
             if column:

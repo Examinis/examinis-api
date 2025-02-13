@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 from examinis.common.schemas.pagination_schema import PageParams
 from examinis.modules.exam.validators import ExamValidationMixin
@@ -24,6 +24,7 @@ class ExamSchema(BaseModel):
     subject: SubjectSchema
     questions: List[QuestionExamSchema]
 
+
 class ExamCreationSchema(BaseModel):
     model_config = ConfigDict(extra='forbid')
 
@@ -41,12 +42,21 @@ class ExamAutomaticCreationSchema(ExamCreationSchema):
 
 
 class ExamListSchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True, arbitrary_types_allowed=True
+    )
+
     id: int
     title: str
+    instructions: Optional[str] = None
     user: UserSchema
     subject: SubjectSchema
     created_at: datetime
     total_question: int
+
+    @field_serializer('created_at')
+    def serialize_created_at(self, created_at: datetime) -> str:
+        return created_at.strftime('%d/%m/%Y %H:%M:%S')
 
 
 class ExamPageParams(PageParams):
