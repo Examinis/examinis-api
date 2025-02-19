@@ -45,7 +45,7 @@ class ExamService(ServiceAbstract[Exam]):
         self, params: ExamPageParams
     ) -> PagedResponseSchema[ExamListSchema]:
         items = self.repository.get_all_paginated(params)
-        total = self.repository.count_all()
+        total = len(items)
 
         results = [ExamListSchema.from_orm(item) for item in items]
 
