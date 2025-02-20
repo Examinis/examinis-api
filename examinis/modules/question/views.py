@@ -8,6 +8,8 @@ from examinis.common.schemas.pagination_schema import (
 )
 from examinis.modules.question.schemas import (
     QuestionCreateSchema,
+    QuestionListSchema,
+    QuestionPageParams,
     QuestionSchema,
     QuestionUpdateSchema,
 )
@@ -19,9 +21,9 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=PagedResponseSchema[QuestionSchema])
+@router.get('/', response_model=PagedResponseSchema[QuestionListSchema])
 def get_questions(
-    params: PageParams = Depends(PageParams),
+    params: QuestionPageParams = Depends(QuestionPageParams),
     service: QuestionService = Depends(QuestionService),
 ):
     return service.get_all_paginated(params)

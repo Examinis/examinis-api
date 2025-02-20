@@ -5,18 +5,19 @@ from uuid import uuid4
 
 from fastapi import Depends, HTTPException, UploadFile
 from fastapi.responses import FileResponse
+from examinis.common.schemas.pagination_schema import PagedResponseSchema
 
-from examinis.common.validators.image_upload_validator import (
-    ImageUploadValidation,
-)
+from examinis.common.validators.image_upload_validator import \
+    ImageUploadValidation
+
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.question import Question
 from examinis.modules.option.service import OptionService
 from examinis.modules.question.repository import QuestionRepository
-from examinis.modules.question.schemas import (
-    QuestionCreateSchema,
-    QuestionUpdateSchema,
-)
+from examinis.modules.question.schemas import (QuestionCreateSchema, QuestionListSchema,
+                                               QuestionPageParams,
+                                               QuestionUpdateSchema,
+                                               QuestionSchema)
 
 
 class QuestionService(ServiceAbstract[Question]):
@@ -123,3 +124,19 @@ class QuestionService(ServiceAbstract[Question]):
         self, subject_id: int, amount: int
     ) -> List[Question]:
         return self.repository.get_random_by_subject(subject_id, amount)
+    
+    def get_all_paginated(
+            self,
+            params: QuestionPageParams
+        ) -> PagedResponseSchema[QuestionListSchema]:
+        items = self.repository.get_all_paginated(params)
+        total = self.repository.count_filtered(params)
+
+        results = [QuestionListSchema.from_orm(item) for item in items]
+
+        return PagedResponseSchema[QuestionListSchema](
+            total=total,
+            page=params.size,
+            size=params.size,
+            results=results,
+        )
