@@ -136,7 +136,7 @@ class QuestionService(ServiceAbstract[Question]):
 
         return PagedResponseSchema[QuestionListSchema](
             total=total,
-            page=params.size,
+            page=params.page,
             size=params.size,
             results=results,
         )
