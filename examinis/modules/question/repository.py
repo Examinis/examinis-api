@@ -39,7 +39,7 @@ class QuestionRepository(RepositoryAbstract[Question]):
             query = query.filter(Question.subject_id == params.subject_id)
         
         if params.difficulty_id:
-            query= query.filter(Question.difficulty_id == params.difficulty_id)
+            query = query.filter(Question.difficulty_id == params.difficulty_id)
 
         query = query.options(joinedload(Question.difficulty))
 
@@ -52,7 +52,7 @@ class QuestionRepository(RepositoryAbstract[Question]):
             query = query.filter(Question.subject_id == params.subject_id)
         
         if params.difficulty_id:
-            query.query.filter(Question.difficulty_id == params.difficulty_id)
+            query = query.filter(Question.difficulty_id == params.difficulty_id)
 
         return query.scalar()
 
