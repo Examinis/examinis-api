@@ -5,37 +5,35 @@ from examinis.models.question import Question
 
 
 def test_create_question(client, user, subject, difficulty, mock_db_time):
-    with mock_db_time(model=Question), mock_db_time(model=Option):
-        response = client.post(
-            '/questions/',
-            json={
-                'text': 'What is the capital of France?',
-                'subject_id': subject.id,
-                'difficulty_id': difficulty.id,
-                'options': [
-                    {
-                        'description': 'Paris',
-                        'letter': 'A',
-                        'is_correct': True,
-                    },
-                    {
-                        'description': 'London',
-                        'letter': 'B',
-                        'is_correct': False,
-                    },
-                    {
-                        'description': 'Berlin',
-                        'letter': 'C',
-                        'is_correct': False,
-                    },
-                    {
-                        'description': 'Madrid',
-                        'letter': 'D',
-                        'is_correct': False,
-                    },
-                ],
+    payload = {
+        'text': 'What is the capital of France?',
+        'subject_id': subject.id,
+        'difficulty_id': difficulty.id,
+        'options': [
+            {
+                'description': 'Paris',
+                'letter': 'A',
+                'is_correct': True,
             },
-        )
+            {
+                'description': 'London',
+                'letter': 'B',
+                'is_correct': False,
+            },
+            {
+                'description': 'Berlin',
+                'letter': 'C',
+                'is_correct': False,
+            },
+            {
+                'description': 'Madrid',
+                'letter': 'D',
+                'is_correct': False,
+            },
+        ],
+    }
+    with mock_db_time(model=Question), mock_db_time(model=Option):
+        response = client.post('/questions/', json=payload)
 
     assert response.status_code == HTTPStatus.CREATED
 

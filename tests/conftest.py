@@ -20,7 +20,7 @@ from tests.factories import (
 
 @pytest.fixture(scope='session')
 def engine():
-    """Create a Postgres container and return an SQLAlchemy engine."""	
+    """Create a Postgres container and return an SQLAlchemy engine."""
     with PostgresContainer('postgres:17.2', driver='psycopg') as postgres:
         _engine = create_engine(postgres.get_connection_url())
 
@@ -42,7 +42,8 @@ def session(engine):
 
 @pytest.fixture
 def client(session):
-    """Create a FastAPI test client with a test database session."""	
+    """Create a FastAPI test client with a test database session."""
+
     def get_session_override():
         return session
 
