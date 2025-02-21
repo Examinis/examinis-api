@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from unittest.mock import patch
 
 from examinis.models.option import Option
 from examinis.models.question import Question
@@ -113,3 +114,72 @@ def test_get_by_invalid_id(client):
 
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json() == {'detail': 'Question not found'}
+
+
+def test_delete_question(client, question, session):
+    response = client.delete(f'/questions/{question.id}')
+
+    assert response.status_code == HTTPStatus.NO_CONTENT
+
+    deleted_question = session.get(Question, question.id)
+    assert deleted_question is None
+
+
+def test_delete_question_with_image(client, question, session):
+    img_path = '/fake/path/to/image.jpg'
+    question.image_path = img_path
+    session.commit()
+
+    with patch('os.remove') as mock_remove:
+        response = client.delete(f'/questions/{question.id}')
+
+        assert response.status_code == HTTPStatus.NO_CONTENT
+
+        mock_remove.assert_called_once_with(img_path)
+
+        deleted_question = session.get(Question, question.id)
+        assert deleted_question is None
+
+
+def test_delete_question_image_not_found(client, question, session):
+    img_path = '/fake/path/to/image.jpg'
+    question.image_path = img_path
+    session.commit()
+
+    with patch('os.remove', side_effect=FileNotFoundError) as mock_remove:
+        response = client.delete(f'/questions/{question.id}')
+
+        assert response.status_code == HTTPStatus.NO_CONTENT
+
+        mock_remove.assert_called_once_with(img_path)
+
+        deleted_question = session.get(Question, question.id)
+        assert deleted_question is None
+
+
+def test_update_question(client, question, session):
+    payload = {
+        'id': question.id,
+        'text': 'Updated Question?',
+        'subject_id': question.subject.id,
+        'difficulty_id': question.difficulty.id,
+        'options': [
+            {'description': 'Option 1', 'letter': 'A', 'is_correct': False},
+            {'description': 'Option 2', 'letter': 'B', 'is_correct': True},
+            {'description': 'Option 3', 'letter': 'C', 'is_correct': False},
+            {'description': 'Option 4', 'letter': 'D', 'is_correct': False},
+        ],
+    }
+
+    response = client.put('/questions/', json=payload)
+
+    assert response.status_code == HTTPStatus.OK
+
+    data = response.json()
+    assert data['id'] == question.id
+    assert data['text'] == 'Updated Question?'
+    assert len(data['options']) == 4
+
+    session.refresh(question)
+    assert question.text == 'Updated Question?'
+    assert len(question.options) == 4
