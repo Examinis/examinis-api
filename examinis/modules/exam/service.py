@@ -2,19 +2,15 @@ from http import HTTPStatus
 
 from fastapi import Depends, HTTPException
 
-from examinis.common.schemas.pagination_schema import (
-    PagedResponseSchema,
-    PageParams,
-)
+from examinis.common.schemas.pagination_schema import (PagedResponseSchema,
+                                                       PageParams)
 from examinis.core.ServiceAbstract import ServiceAbstract
 from examinis.models.exam import Exam
 from examinis.modules.exam.repository import ExamRepository
-from examinis.modules.exam.schemas import (
-    ExamAutomaticCreationSchema,
-    ExamListSchema,
-    ExamManualCreationSchema,
-    ExamPageParams,
-)
+from examinis.modules.exam.schemas import (ExamAutomaticCreationSchema,
+                                           ExamListSchema,
+                                           ExamManualCreationSchema,
+                                           ExamPageParams)
 from examinis.modules.question.service import QuestionService
 from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.user.schemas import UserSchema
