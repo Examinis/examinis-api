@@ -39,13 +39,13 @@ class ExamRepository(RepositoryAbstract[Exam]):
         query = query.options(joinedload(Exam.user), joinedload(Exam.subject))
 
         return super().get_all_paginated(query=query, params=params)
-    
+
     def count_filtered(self, params: ExamPageParams) -> int:
         query = self.session.query(func.count(Exam.id))
 
         if params.subject_id:
             query = query.filter(Exam.subject_id == params.subject_id)
-        
+
         if params.user_id:
             query = query.filter(Exam.user_id == params.user_id)
 

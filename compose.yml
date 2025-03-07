@@ -1,20 +1,18 @@
 services:
-  examinis_database:
+  database:
     image: postgres
-    container_name: examinis_database
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: admin
-      POSTGRES_DB: app_db
+      POSTGRES_DB: examinis_db
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
     restart: always
 
-  examinis_app:
-    image: examinis_app
-    container_name: examinis_app
+  api:
+    image: examinis_api
     entrypoint: ./entrypoint.sh
     build: .
     volumes:
@@ -23,9 +21,9 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - examinis_database
+      - database
     environment:
-      DATABASE_URL: postgresql+psycopg://admin:secret@examinis_database:5432/app_db
+      DATABASE_URL: postgresql+psycopg://admin:secret@database:5432/examinis_db
     restart: always
 
 volumes:

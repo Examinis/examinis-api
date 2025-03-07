@@ -5,8 +5,11 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from examinis.common.schemas.pagination_schema import PageParams
 from examinis.modules.difficulty.schemas import DifficultySchema
-from examinis.modules.option.schemas import (OptionExamSchema, OptionInSchema,
-                                             OptionSchema)
+from examinis.modules.option.schemas import (
+    OptionExamSchema,
+    OptionInSchema,
+    OptionSchema,
+)
 from examinis.modules.option.validators import OptionsValidationMixin
 from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.user.schemas import UserSchema
@@ -48,11 +51,12 @@ class QuestionExamSchema(BaseModel):
     text: str
     options: List[OptionExamSchema]
 
+
 class QuestionListSchema(BaseModel):
     model_config = ConfigDict(
         from_attributes=True, arbitrary_types_allowed=True
     )
-    
+
     id: int
     text: str
     created_at: datetime
@@ -60,6 +64,7 @@ class QuestionListSchema(BaseModel):
     user: UserSchema
     subject: SubjectSchema
     difficulty: DifficultySchema
+
 
 class QuestionPageParams(PageParams):
     subject_id: Optional[int] = None
