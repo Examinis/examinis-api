@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi import Depends, HTTPException
 
-from examinis.core.ServiceAbstract import ServiceAbstract
+from examinis.core.service_abstract import ServiceAbstract
 from examinis.models.option import Option
 from examinis.modules.option.repository import OptionRepository
 from examinis.modules.option.schemas import OptionInSchema

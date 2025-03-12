@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from testcontainers.postgres import PostgresContainer
 
 from examinis.app import app
+from examinis.core.security import hash_password
 from examinis.db.config import get_session
 from examinis.models.base import Base
 from tests.factories import (
@@ -77,11 +78,15 @@ def mock_db_time():
 
 @pytest.fixture
 def user(session):
-    user = UserFactory()
+    user = UserFactory(
+        password=hash_password('password'),
+    )
 
     session.add(user)
     session.commit()
     session.refresh(user)
+
+    user.clean_password = 'password'
 
     return user
 
@@ -117,3 +122,11 @@ def question(session):
     session.refresh(question)
 
     return question
+
+@pytest.fixture
+def token(client, user):
+    response = client.post(
+        '/auth',
+        data={'username': user.email, 'password': user.clean_password},
+    )
+    return response.json()['access_token']

@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from fastapi import Depends, HTTPException
 
-from examinis.core.ServiceAbstract import ServiceAbstract
+from examinis.core.service_abstract import ServiceAbstract
 from examinis.models.subject import Subject
 from examinis.modules.subject.repository import SubjectRepository
 

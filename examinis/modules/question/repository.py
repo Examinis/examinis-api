@@ -4,7 +4,7 @@ from fastapi import Depends
 from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 
-from examinis.core.RepositoryAbstract import RepositoryAbstract
+from examinis.core.repository_abstract import RepositoryAbstract
 from examinis.db.config import get_session
 from examinis.models import Question
 from examinis.modules.question.schemas import QuestionPageParams

@@ -10,7 +10,7 @@ from examinis.common.schemas.pagination_schema import PagedResponseSchema
 from examinis.common.validators.image_upload_validator import (
     ImageUploadValidation,
 )
-from examinis.core.ServiceAbstract import ServiceAbstract
+from examinis.core.service_abstract import ServiceAbstract
 from examinis.models.question import Question
 from examinis.modules.option.service import OptionService
 from examinis.modules.question.repository import QuestionRepository

@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from examinis.core.RepositoryAbstract import RepositoryAbstract, Session
+from examinis.core.repository_abstract import RepositoryAbstract, Session
 from examinis.db.config import get_session
 from examinis.models import Role
 

@@ -4,7 +4,7 @@ from examinis.common.schemas.pagination_schema import (
     PagedResponseSchema,
     PageParams,
 )
-from examinis.core.RepositoryAbstract import RepositoryAbstract
+from examinis.core.repository_abstract import RepositoryAbstract
 from examinis.models import Base
 
 T = TypeVar('T', bound=Base)

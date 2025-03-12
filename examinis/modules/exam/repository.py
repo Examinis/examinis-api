@@ -4,8 +4,7 @@ from fastapi import Depends
 from sqlalchemy.orm import joinedload
 from sqlalchemy.sql import func
 
-from examinis.common.schemas.pagination_schema import PageParams
-from examinis.core.RepositoryAbstract import RepositoryAbstract, Session
+from examinis.core.repository_abstract import RepositoryAbstract, Session
 from examinis.db.config import get_session
 from examinis.models import Exam
 from examinis.modules.exam.schemas import ExamPageParams
