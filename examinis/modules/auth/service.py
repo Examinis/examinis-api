@@ -7,6 +7,7 @@ from examinis.core.security import create_access_token, verify_password
 from examinis.core.service_abstract import ServiceAbstract
 from examinis.models.user import User
 from examinis.modules.auth.repository import AuthRepository
+from examinis.modules.user_status.user_status_enum import UserStatusEnum
 
 
 class AuthService(ServiceAbstract[User]):
@@ -30,6 +31,18 @@ class AuthService(ServiceAbstract[User]):
             raise HTTPException(
                 status_code=HTTPStatus.UNAUTHORIZED,
                 detail='Incorrect email or password',
+            )
+
+        if user.status_id == UserStatusEnum.PENDING.value:
+            raise HTTPException(
+                status_code=HTTPStatus.FORBIDDEN,
+                detail='User is not active yet, wait for the admin to activate your account',
+            )
+        
+        if user.status_id == UserStatusEnum.INACTIVE.value:
+            raise HTTPException(
+                status_code=HTTPStatus.FORBIDDEN,
+                detail='User is inactive, contact the admin for more information',
             )
 
         access_token = create_access_token(data={'sub': user.email})
