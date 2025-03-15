@@ -17,6 +17,7 @@ class ImageUploadValidation:
             raise ValueError(
                 f'Image size must be less than {IMAGE_MAX_SIZE_IN_MB} MB'
             )
+        value.file.seek(0)
         return value
 
     @staticmethod

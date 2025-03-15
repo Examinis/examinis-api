@@ -18,5 +18,4 @@ class UserCreateSchema(BaseModel):
     last_name: str = Field(..., min_length=2, max_length=50)
     email: EmailStr
     password: str = Field(..., min_length=8)
-    # institution: Optional[str] = None
-    # identity_proof: Optional[str] = None
+    institution: Optional[str] = None

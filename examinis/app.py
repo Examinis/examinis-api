@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from examinis.modules import include_routers
+from examinis.settings import Settings
 
 logging.basicConfig(level=logging.INFO)
 
@@ -32,4 +33,5 @@ include_routers(app)
 
 @app.get('/')
 def read_root():
+    print(Settings().DATABASE_URL)
     return {'Hello': 'World'}

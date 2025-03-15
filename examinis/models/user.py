@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -15,6 +15,8 @@ class User(Base):
     last_name: Mapped[str]
     email: Mapped[str]
     password: Mapped[str]
+    identity_proof: Mapped[str]
+    institution: Mapped[Optional[str]]
     created_at: Mapped[datetime] = mapped_column(default=datetime.now)
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.now, onupdate=datetime.now

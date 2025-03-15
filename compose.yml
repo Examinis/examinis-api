@@ -1,6 +1,7 @@
 services:
   database:
     image: postgres
+    container_name: examinis_db
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
@@ -13,11 +14,12 @@ services:
 
   api:
     image: examinis_api
+    container_name: examinis_api
     entrypoint: ./entrypoint.sh
     build: .
     volumes:
       - .:/app
-      - ./uploaded_images:/app/uploaded_images
+      - ./uploads:/app/uploads
     ports:
       - "8000:8000"
     depends_on:

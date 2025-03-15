@@ -1,5 +1,6 @@
 import os
 from http import HTTPStatus
+from pathlib import Path
 from typing import List
 from uuid import uuid4
 
@@ -90,21 +91,23 @@ class QuestionService(ServiceAbstract[Question]):
         ImageUploadValidation.validate_image(image)
 
         question = self.get(question_id)
-
+        
         if question.image_path:
-            try:
-                os.remove(question.image_path)
-            except FileNotFoundError:
-                pass
+            old_image_path = Path(question.image_path)
+            if old_image_path.exists():
+                old_image_path.unlink()
 
-        image_extension = image.filename.split('.')[-1]
-        image.filename = f'{uuid4()}.{image_extension}'
-        image_path = f'uploaded_images/{image.filename}'
+        upload_dir = Path("uploads/images/questions")
+        upload_dir.mkdir(parents=True, exist_ok=True)
 
-        with open(image_path, 'wb') as buffer:
-            buffer.write(await image.read())
+        image_extension = image.filename.rsplit('.', 1)[-1]
+        new_filename = f"{uuid4()}.{image_extension}"
+        image_path = upload_dir / new_filename
 
-        return self.repository.update(question_id, {'image_path': image_path})
+        content = await image.read()
+        image_path.write_bytes(content)
+
+        return self.repository.update(question_id, {'image_path': str(image_path)})
 
     def get_image(self, question_id: int):
         question = self.get(question_id)
