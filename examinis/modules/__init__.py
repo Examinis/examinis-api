@@ -3,9 +3,7 @@ import logging
 import os
 from typing import List
 
-from fastapi import Depends, FastAPI
-
-from examinis.core.security import get_current_user
+from fastapi import FastAPI
 
 
 def __get_named_modules() -> List[str]:
@@ -19,19 +17,13 @@ def __get_named_modules() -> List[str]:
 
 def include_routers(app: FastAPI):
     """Include routers from all modules."""
-    authentication = [Depends(get_current_user)]
-    excluded_modules = {'auth', 'user'}
-
     for module in __get_named_modules():
         try:
             module_name = f'examinis.modules.{module}.views'
             mod = importlib.import_module(module_name)
 
             if hasattr(mod, 'router'):
-                if module in excluded_modules:
-                    app.include_router(mod.router)
-                else:
-                    app.include_router(mod.router, dependencies=authentication)
+                app.include_router(mod.router)
             else:
                 logging.warning(
                     f"Module '{module}' does not have a 'router'. Skipping."

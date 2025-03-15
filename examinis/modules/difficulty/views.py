@@ -2,12 +2,14 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
+from examinis.core.security import get_current_user
 from examinis.modules.difficulty.schemas import DifficultySchema
 from examinis.modules.difficulty.service import DifficultyService
 
 router = APIRouter(
     prefix='/difficulty',
     tags=['difficulty'],
+    dependencies=[Depends(get_current_user)],
 )
 
 

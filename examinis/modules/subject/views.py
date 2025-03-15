@@ -2,12 +2,14 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
+from examinis.core.security import get_current_user
 from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.subject.service import SubjectService
 
 router = APIRouter(
     prefix='/subject',
     tags=['subject'],
+    dependencies=[Depends(get_current_user)],
 )
 
 

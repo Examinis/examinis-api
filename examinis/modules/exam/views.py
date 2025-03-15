@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends
 
 from examinis.common.schemas.pagination_schema import (
     PagedResponseSchema,
-    PageParams,
 )
+from examinis.core.security import get_current_user
 from examinis.modules.exam.schemas import (
     ExamAutomaticCreationSchema,
     ExamListSchema,
@@ -18,6 +18,7 @@ from examinis.modules.exam.service import ExamService
 router = APIRouter(
     prefix='/exams',
     tags=['exams'],
+    dependencies=[Depends(get_current_user)],
 )
 
 

@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, UploadFile
 
 from examinis.common.schemas.pagination_schema import (
     PagedResponseSchema,
-    PageParams,
 )
+from examinis.core.security import get_current_user
 from examinis.modules.question.schemas import (
     QuestionCreateSchema,
     QuestionListSchema,
@@ -18,6 +18,7 @@ from examinis.modules.question.service import QuestionService
 router = APIRouter(
     prefix='/questions',
     tags=['questions'],
+    dependencies=[Depends(get_current_user)],
 )
 
 

@@ -5,8 +5,10 @@ from fastapi import Depends, HTTPException
 from examinis.core.security import hash_password
 from examinis.core.service_abstract import ServiceAbstract
 from examinis.models.user import User
+from examinis.modules.role.role_enum import RoleEnum
 from examinis.modules.user.repository import UserRepository
 from examinis.modules.user.schemas import UserCreateSchema
+from examinis.modules.user_status.user_status_enum import UserStatusEnum
 
 
 class UserService(ServiceAbstract[User]):
@@ -26,7 +28,7 @@ class UserService(ServiceAbstract[User]):
 
         user_dict = user.model_dump()
         user_dict['password'] = hash_password(user_dict['password'])
-        user_dict['role_id'] = 2
-        user_dict['status_id'] = True
+        user_dict['role_id'] = RoleEnum.PROFESSOR.value
+        user_dict['status_id'] = UserStatusEnum.PENDING.value
 
         return super().create(user_dict)
