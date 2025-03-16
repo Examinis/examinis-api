@@ -8,7 +8,9 @@ from examinis.modules.user_status.repository import UserStatusRepository
 
 
 class UserStatusService(ServiceAbstract[UserStatus]):
-    def __init__(self, repository: UserStatusRepository = Depends(UserStatusRepository)):
+    def __init__(
+        self, repository: UserStatusRepository = Depends(UserStatusRepository)
+    ):
         super().__init__(repository)
 
     def get(self, id: int) -> UserStatus:

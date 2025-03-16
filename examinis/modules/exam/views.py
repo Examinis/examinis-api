@@ -1,10 +1,6 @@
-from typing import List
-
 from fastapi import APIRouter, Depends
 
-from examinis.common.schemas.pagination_schema import (
-    PagedResponseSchema,
-)
+from examinis.common.schemas.pagination_schema import PagedResponseSchema
 from examinis.core.security import get_current_user
 from examinis.modules.exam.schemas import (
     ExamAutomaticCreationSchema,
@@ -31,7 +27,10 @@ def get_all(
 
 
 @router.get('/{exam_id}', response_model=ExamSchema)
-def get_by_id(exam_id: int, exam_service: ExamService = Depends(ExamService)):
+def get_by_id(
+    exam_id: int,
+    exam_service: ExamService = Depends(ExamService),
+):
     return exam_service.get(exam_id)
 
 
@@ -39,13 +38,15 @@ def get_by_id(exam_id: int, exam_service: ExamService = Depends(ExamService)):
 def create_manual(
     exam: ExamManualCreationSchema,
     exam_service: ExamService = Depends(ExamService),
+    user=Depends(get_current_user),
 ):
-    return exam_service.create_manual(exam)
+    return exam_service.create_manual(exam, user.id)
 
 
 @router.post('/automatic', response_model=ExamSchema)
 def create_automatic(
     exam: ExamAutomaticCreationSchema,
     exam_service: ExamService = Depends(ExamService),
+    user=Depends(get_current_user),
 ):
-    return exam_service.create_automatic(exam)
+    return exam_service.create_automatic(exam, user.id)

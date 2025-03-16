@@ -38,7 +38,7 @@ class AuthService(ServiceAbstract[User]):
                 status_code=HTTPStatus.FORBIDDEN,
                 detail='User is not active yet, wait for the admin to activate your account',
             )
-        
+
         if user.status_id == UserStatusEnum.INACTIVE.value:
             raise HTTPException(
                 status_code=HTTPStatus.FORBIDDEN,

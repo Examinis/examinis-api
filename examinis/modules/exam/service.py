@@ -51,7 +51,9 @@ class ExamService(ServiceAbstract[Exam]):
             results=results,
         )
 
-    def create_manual(self, exam: ExamManualCreationSchema) -> Exam:
+    def create_manual(
+        self, exam: ExamManualCreationSchema, user_id: int
+    ) -> Exam:
         questions = self.question_service.get_by_list(exam.questions)
 
         if len(questions) != len(exam.questions):
@@ -61,17 +63,25 @@ class ExamService(ServiceAbstract[Exam]):
             )
 
         exam_in = exam.model_dump(exclude={'questions'})
-        exam_in['user_id'] = 2   # Professor id at the moment
+        exam_in['user_id'] = user_id
 
         return self.repository.create_manual(exam_in, questions)
 
-    def create_automatic(self, exam: ExamAutomaticCreationSchema) -> Exam:
+    def create_automatic(
+        self, exam: ExamAutomaticCreationSchema, user_id: int
+    ) -> Exam:
         questions = self.question_service.get_random_by_subject(
             exam.subject_id,
             exam.amount,
         )
 
+        if len(questions) != exam.amount:
+            raise HTTPException(
+                status_code=HTTPStatus.BAD_REQUEST,
+                detail='Not enough questions for the selected subject',
+            )
+
         exam_in = exam.model_dump(exclude={'amount'})
-        exam_in['user_id'] = 2   # Professor id at the moment
+        exam_in['user_id'] = user_id
 
         return self.repository.create_manual(exam_in, questions)

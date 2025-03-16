@@ -13,19 +13,27 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=List[UserSchema], dependencies=[Depends(get_current_user)])
+@router.get(
+    '/',
+    response_model=List[UserSchema],
+    dependencies=[Depends(get_current_user)],
+)
 def get_all(user_service: UserService = Depends(UserService)):
     return user_service.get_all()
 
 
-@router.get('/{user_id}', response_model=UserSchema, dependencies=[Depends(get_current_user)])
+@router.get(
+    '/{user_id}',
+    response_model=UserSchema,
+    dependencies=[Depends(get_current_user)],
+)
 def get_by_id(user_id: int, user_service: UserService = Depends(UserService)):
     return user_service.get(user_id)
 
 
 # @router.post('/', response_model=UserSchema)
 # def create(
-#     user: UserCreateSchema, 
+#     user: UserCreateSchema,
 #     user_service: UserService = Depends(UserService)
 # ):
 #     return user_service.create(user)
@@ -51,10 +59,10 @@ async def create(
     user_service: UserService = Depends(UserService),
 ):
     user = {
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
-        "password": password,
-        "institution": institution
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        'password': password,
+        'institution': institution,
     }
     return await user_service.create(user, identity_proof)

@@ -2,10 +2,9 @@ from http import HTTPStatus
 
 from fastapi import APIRouter, Depends, UploadFile
 
-from examinis.common.schemas.pagination_schema import (
-    PagedResponseSchema,
-)
+from examinis.common.schemas.pagination_schema import PagedResponseSchema
 from examinis.core.security import get_current_user
+from examinis.models.user import User
 from examinis.modules.question.schemas import (
     QuestionCreateSchema,
     QuestionListSchema,
@@ -45,8 +44,9 @@ def get_by_id(
 def create(
     question: QuestionCreateSchema,
     service: QuestionService = Depends(QuestionService),
+    user: User = Depends(get_current_user),
 ):
-    return service.create(question)
+    return service.create(question, user.id)
 
 
 @router.put('/', response_model=QuestionSchema)

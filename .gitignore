@@ -6,7 +6,6 @@ __pycache__/
 *.pyc
 *.pyo
 
-
 # Arquivos de configuração do editor (ex: VS Code)
 .vscode/
 
@@ -27,4 +26,4 @@ __pycache__/
 
 .env
 
-uploaded_images/*
+uploads/

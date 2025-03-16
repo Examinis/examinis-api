@@ -1,10 +1,12 @@
+import shutil
 from http import HTTPStatus
 from pathlib import Path
-import shutil
 
 from fastapi import Depends, HTTPException, UploadFile
 
-from examinis.common.validators.identity_proof_validator import PDFUploadValidation
+from examinis.common.validators.identity_proof_validator import (
+    PDFUploadValidation,
+)
 from examinis.core.security import hash_password
 from examinis.core.service_abstract import ServiceAbstract
 from examinis.models.user import User
@@ -30,21 +32,22 @@ class UserService(ServiceAbstract[User]):
 
         user['password'] = hash_password(user['password'])
         user['role_id'] = RoleEnum.PROFESSOR.value
-        user['status_id'] = UserStatusEnum.PENDING.value
+        user['status_id'] = UserStatusEnum.ACTIVE.value
 
         self._save_identity_proof(user, identity_proof)
 
         return super().create(user)
 
-    def _save_identity_proof(self, user: dict, identity_proof: UploadFile) -> User:
+    def _save_identity_proof(
+        self, user: dict, identity_proof: UploadFile
+    ) -> User:
         PDFUploadValidation.validate_pdf(identity_proof)
 
-        upload_dir = Path("uploads/users/identity_proofs")
+        upload_dir = Path('uploads/users/identity_proofs')
         upload_dir.mkdir(parents=True, exist_ok=True)
         file_path = upload_dir / f"{user['email']}.pdf"
 
-        with file_path.open("wb") as buffer:
+        with file_path.open('wb') as buffer:
             shutil.copyfileobj(identity_proof.file, buffer)
 
         user['identity_proof'] = str(file_path)
-    

@@ -44,10 +44,10 @@ class QuestionService(ServiceAbstract[Question]):
 
         return question
 
-    def create(self, question: QuestionCreateSchema) -> Question:
+    def create(self, question: QuestionCreateSchema, user_id: int) -> Question:
         question_in = question.model_dump()
         question_in.pop('options')
-        question_in['user_id'] = 1
+        question_in['user_id'] = user_id
 
         question_db = self.repository.create(question_in)
         options = self.option_service.create_by_list(
@@ -91,23 +91,25 @@ class QuestionService(ServiceAbstract[Question]):
         ImageUploadValidation.validate_image(image)
 
         question = self.get(question_id)
-        
+
         if question.image_path:
             old_image_path = Path(question.image_path)
             if old_image_path.exists():
                 old_image_path.unlink()
 
-        upload_dir = Path("uploads/images/questions")
+        upload_dir = Path('uploads/images/questions')
         upload_dir.mkdir(parents=True, exist_ok=True)
 
         image_extension = image.filename.rsplit('.', 1)[-1]
-        new_filename = f"{uuid4()}.{image_extension}"
+        new_filename = f'{uuid4()}.{image_extension}'
         image_path = upload_dir / new_filename
 
         content = await image.read()
         image_path.write_bytes(content)
 
-        return self.repository.update(question_id, {'image_path': str(image_path)})
+        return self.repository.update(
+            question_id, {'image_path': str(image_path)}
+        )
 
     def get_image(self, question_id: int):
         question = self.get(question_id)

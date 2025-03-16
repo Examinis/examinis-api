@@ -1,7 +1,7 @@
-from fastapi import UploadFile, HTTPException
+from fastapi import HTTPException, UploadFile
 
 PDF_MAX_SIZE_IN_MB = 5
-ALLOWED_EXTENSION = "pdf"
+ALLOWED_EXTENSION = 'pdf'
 
 
 class PDFUploadValidation:
@@ -19,7 +19,8 @@ class PDFUploadValidation:
 
         if file_size > PDF_MAX_SIZE_IN_MB * 1024 * 1024:
             raise HTTPException(
-                status_code=400, detail=f"O arquivo deve ter no máximo {PDF_MAX_SIZE_IN_MB} MB"
+                status_code=400,
+                detail=f'O arquivo deve ter no máximo {PDF_MAX_SIZE_IN_MB} MB',
             )
         return value
 
@@ -28,6 +29,7 @@ class PDFUploadValidation:
         extension = value.filename.split('.')[-1].lower()
         if extension != ALLOWED_EXTENSION:
             raise HTTPException(
-                status_code=400, detail=f"O arquivo deve ser um PDF ({ALLOWED_EXTENSION})"
+                status_code=400,
+                detail=f'O arquivo deve ser um PDF ({ALLOWED_EXTENSION})',
             )
         return value
