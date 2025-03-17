@@ -14,7 +14,6 @@ from examinis.modules.exam.service import ExamService
 router = APIRouter(
     prefix='/exams',
     tags=['exams'],
-    dependencies=[Depends(get_current_user)],
 )
 
 
