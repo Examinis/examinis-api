@@ -11,7 +11,10 @@ services:
     ports:
       - "5432:5432"
     restart: always
-
+    networks:
+      - default
+      - examinis_network
+  
   api:
     image: examinis_api
     container_name: examinis_api
@@ -27,6 +30,14 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://admin:secret@database:5432/examinis_db
     restart: always
+    networks:
+      - default
+      - examinis_network
 
 volumes:
   pgdata:
+
+networks:
+  default:
+  examinis_network:
+    name: examinis_network
