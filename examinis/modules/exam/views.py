@@ -4,6 +4,8 @@ from examinis.common.schemas.pagination_schema import PagedResponseSchema
 from examinis.core.security import get_current_user
 from examinis.modules.exam.schemas import (
     ExamAutomaticCreationSchema,
+    ExamCorrectionInputSchema,
+    ExamCorrectionSchema,
     ExamListSchema,
     ExamManualCreationSchema,
     ExamPageParams,
@@ -49,3 +51,12 @@ def create_automatic(
     user=Depends(get_current_user),
 ):
     return exam_service.create_automatic(exam, user.id)
+
+
+@router.post('/{exam_id}/grade', response_model=ExamCorrectionSchema)
+def grade_exam(
+    exam_id: int,
+    answers: ExamCorrectionInputSchema,
+    exam_service: ExamService = Depends(ExamService),
+):
+    return exam_service.grade(exam_id, answers.model_dump())

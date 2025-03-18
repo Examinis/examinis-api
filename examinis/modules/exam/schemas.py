@@ -1,11 +1,14 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 from examinis.common.schemas.pagination_schema import PageParams
 from examinis.modules.exam.validators import ExamValidationMixin
-from examinis.modules.question.schemas import QuestionExamSchema
+from examinis.modules.question.schemas import (
+    QuestionCorrectSchema,
+    QuestionExamSchema,
+)
 from examinis.modules.subject.schemas import SubjectSchema
 from examinis.modules.user.schemas import UserSchema
 
@@ -61,3 +64,24 @@ class ExamListSchema(BaseModel):
 class ExamPageParams(PageParams):
     subject_id: Optional[int] = None
     user_id: Optional[int] = None
+
+
+class AnswerSchema(BaseModel):
+    question_id: int
+    selected_option: int
+
+
+class ExamCorrectionInputSchema(BaseModel):
+    answers: List[AnswerSchema]
+
+
+class ExamCorrectionSchema(ExamSchema):
+    id: int
+    title: str
+    instructions: Optional[str]
+    created_at: datetime
+    answered_at: datetime
+    user: UserSchema
+    subject: SubjectSchema
+    questions: List[QuestionCorrectSchema]
+    score: float

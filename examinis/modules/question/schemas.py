@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from examinis.common.schemas.pagination_schema import PageParams
 from examinis.modules.difficulty.schemas import DifficultySchema
 from examinis.modules.option.schemas import (
+    OptionCorrectedSchema,
     OptionExamSchema,
     OptionInSchema,
     OptionSchema,
@@ -69,3 +70,9 @@ class QuestionListSchema(BaseModel):
 class QuestionPageParams(PageParams):
     subject_id: Optional[int] = None
     difficulty_id: Optional[int] = None
+
+
+class QuestionCorrectSchema(BaseModel):
+    id: int
+    text: str
+    options: List[OptionCorrectedSchema] = Field(default_factory=list)

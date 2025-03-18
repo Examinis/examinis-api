@@ -20,3 +20,7 @@ class OptionExamSchema(BaseModel):
     id: int
     description: str
     letter: str
+
+
+class OptionCorrectedSchema(OptionSchema):
+    selected: bool
