@@ -11,7 +11,7 @@ from examinis.modules.auth.repository import AuthRepository
 
 SECRET_KEY = '123'
 ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE_MINUTES = 5000
+ACCESS_TOKEN_EXPIRE_MINUTES = 3600 * 24
 
 pwd_context = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/')
