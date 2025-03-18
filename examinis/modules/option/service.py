@@ -14,6 +14,7 @@ class OptionService(ServiceAbstract[Option]):
         self, repository: OptionRepository = Depends(OptionRepository)
     ):
         super().__init__(repository)
+        self.repository = repository
 
     def get(self, id: int) -> Option:
         option = self.repository.get(id)
@@ -37,11 +38,6 @@ class OptionService(ServiceAbstract[Option]):
 
             option_db = self.create(option_dict)
             options_db.append(option_db)
-
-            if option.is_correct:
-                self.repository.create_correct_option(
-                    question_id, option_db.id
-                )
 
         return options_db
 

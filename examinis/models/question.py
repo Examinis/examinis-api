@@ -33,9 +33,6 @@ class Question(Base):
     options: Mapped[List['Option']] = relationship(
         'Option', back_populates='question'
     )
-    correct_options: Mapped[List['CorrectOption']] = relationship(
-        'CorrectOption', back_populates='question'
-    )
     exams: Mapped[List['Exam']] = relationship(
         'Exam',
         secondary=question_exam_association,

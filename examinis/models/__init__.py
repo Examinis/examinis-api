@@ -1,5 +1,4 @@
 from .base import Base
-from .correct_option import CorrectOption
 from .difficulty import Difficulty
 from .exam import Exam, question_exam_association
 from .option import Option
