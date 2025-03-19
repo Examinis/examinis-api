@@ -76,7 +76,6 @@ class ExamCorrectionInputSchema(BaseModel):
 
 
 class ExamCorrectionSchema(BaseModel):
-    id: int
     title: str
     instructions: Optional[str]
     created_at: datetime

@@ -141,7 +141,6 @@ class ExamService(ServiceAbstract[Exam]):
         score = (correct_questions / len(questions)) * 100 if questions else 0
 
         return ExamCorrectionSchema(
-            id=exam.id,
             title=exam.title,
             instructions=exam.instructions,
             created_at=exam.created_at,
