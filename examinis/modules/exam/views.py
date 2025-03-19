@@ -6,6 +6,7 @@ from examinis.modules.exam.schemas import (
     ExamAutomaticCreationSchema,
     ExamCorrectionInputSchema,
     ExamCorrectionSchema,
+    ExamDetailsSchema,
     ExamListSchema,
     ExamManualCreationSchema,
     ExamPageParams,
@@ -28,6 +29,14 @@ def get_all(
 
 
 @router.get('/{exam_id}', response_model=ExamSchema)
+def get_by_id(
+    exam_id: int,
+    exam_service: ExamService = Depends(ExamService),
+):
+    return exam_service.get(exam_id)
+
+
+@router.get('/{exam_id}/details', response_model=ExamDetailsSchema)
 def get_by_id(
     exam_id: int,
     exam_service: ExamService = Depends(ExamService),

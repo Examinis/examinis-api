@@ -1,8 +1,7 @@
 -- Seed for development.
 
 -- Clear
-TRUNCATE TABLE public.user, public.role, public.user_status, public.difficulty, public.subject, public.option,
-public.correct_option, public.question, public.exam CASCADE;
+TRUNCATE TABLE public.user, public.role, public.user_status, public.difficulty, public.subject, public.option, public.question, public.exam CASCADE;
 
 -- Insert Difficulty
 ALTER SEQUENCE difficulty_id_seq RESTART with 1;

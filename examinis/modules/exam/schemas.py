@@ -7,6 +7,7 @@ from examinis.common.schemas.pagination_schema import PageParams
 from examinis.modules.exam.validators import ExamValidationMixin
 from examinis.modules.question.schemas import (
     QuestionCorrectSchema,
+    QuestionDetailsSchema,
     QuestionExamSchema,
 )
 from examinis.modules.subject.schemas import SubjectSchema
@@ -84,3 +85,13 @@ class ExamCorrectionSchema(BaseModel):
     subject: SubjectSchema
     questions: List[QuestionCorrectSchema]
     score: float
+
+
+class ExamDetailsSchema(BaseModel):
+    id: int
+    title: str
+    instructions: Optional[str]
+    created_at: datetime
+    user: UserSchema
+    subject: SubjectSchema
+    questions: List[QuestionDetailsSchema]

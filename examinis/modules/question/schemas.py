@@ -76,3 +76,9 @@ class QuestionCorrectSchema(BaseModel):
     id: int
     text: str
     options: List[OptionCorrectedSchema] = Field(default_factory=list)
+
+
+class QuestionDetailsSchema(BaseModel):
+    id: int
+    text: str
+    options: List[OptionSchema] = Field(default_factory=list)
