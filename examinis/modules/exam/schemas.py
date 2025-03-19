@@ -75,13 +75,13 @@ class ExamCorrectionInputSchema(BaseModel):
     answers: List[AnswerSchema]
 
 
-class ExamCorrectionSchema(ExamSchema):
+class ExamCorrectionSchema(BaseModel):
     id: int
     title: str
     instructions: Optional[str]
     created_at: datetime
     answered_at: datetime
-    user: UserSchema
+    teacher: UserSchema
     subject: SubjectSchema
     questions: List[QuestionCorrectSchema]
     score: float

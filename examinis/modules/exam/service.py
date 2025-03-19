@@ -146,7 +146,7 @@ class ExamService(ServiceAbstract[Exam]):
             instructions=exam.instructions,
             created_at=exam.created_at,
             answered_at=datetime.now(),
-            user=exam.user,
+            teacher=exam.user,
             subject=exam.subject,
             questions=corrected_questions,
             score=score,
